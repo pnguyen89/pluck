@@ -25,7 +25,7 @@ CREATE TABLE plants (
   plant TEXT NOT NULL,
   address TEXT(4294967295) NOT NULL,
   zipcode INT NOT NULL,
-  toggled BOOLEAN,
+  toggled BOOLEAN DEFAULT false,
   PRIMARY KEY (id)
 );
 
