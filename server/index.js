@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('../NewFAndV');
 const express = require('express');
 const bodyParser = require('body-parser');
 const dbHelpers = require('../database/index.js');
