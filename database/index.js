@@ -204,12 +204,52 @@ module.exports.selectAllZipcodePlants = (zipcode, callback) => {
 // });
 
 module.exports.selectAllUsersPlants = (iduser, callback) => {
-  connection.query(`SELECT * FROM usersPlants WHERE iduser = ${iduser}`, (err, plants) => {
+  connection.query(`SELECT * FROM usersPlants WHERE iduser = ${iduser}`, (err, combos) => {
     if (err) {
       callback(err, null);
     } else {
-      callback(null, plants);
+      const plantIds = _.map(combos, (combo) => {
+        return combo.idplant;
+      });
+      const returnPlants = [];
+      _.forEach(plantIds, (id, index) => {
+        module.exports.selectSinglePlant(id, (err2, plant) => {
+          if (err2) {
+            callback(err2, null);
+          } else {
+            returnPlants.push(plant);
+            if (index === plantIds.length - 1) {
+              callback(null, returnPlants);
+            }
+          }
+        });
+      });
     }
+  });
+};
+
+// module.exports.selectAllUsersPlants(1, (err, res) => {
+//   console.log(err, res);
+// });
+
+module.exports.selectAllUsersLikes = (iduser, callback) => {
+  connection.query(`SELECT * FROM usersLiked WHERE iduser = ${iduser}`, (err, ids) => {
+    const plantIds = _.map(ids, (combo) => {
+      return combo.idplant;
+    });
+    const returnPlants = [];
+    _.forEach(plantIds, (id, index) => {
+      module.exports.selectSinglePlant(id, (err, plant) => {
+        if (err) {
+          callback(err, null);
+        } else {
+          returnPlants.push(plant);
+          if (index === plantIds.length - 1) {
+            callback(null, returnPlants);
+          }
+        }
+      });
+    });
   });
 };
 
