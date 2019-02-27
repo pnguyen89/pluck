@@ -3,6 +3,6 @@ bower_components/
 *.log
 build/
 client/dist/
+bundle.js
 .env
-database/sensitive-data.js
 package-lock.json
