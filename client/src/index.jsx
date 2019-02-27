@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import NavBar from './components/Nav.jsx';
 import UserProfile from './components/UserProfile.jsx';
 import ZipCode from './components/Zip-code.jsx';
@@ -12,8 +13,7 @@ import CreatePlantProfile from './components/CreatePlantProfile.jsx';
 import MyProfile from './components/myProfile.jsx';
 import MapView from './components/MapView.jsx';
 import SampleData from "./components/SampleData";
-import axios from 'axios';
- 
+
 
 class App extends React.Component {
   constructor(props) {
@@ -34,6 +34,19 @@ class App extends React.Component {
 
   componentDidMount() {
     this.forceUpdate(); // rerenders page when components state or props change
+  }
+
+  getALocation() {
+    function displayLocationInfo(position) {
+      const lng = position.coords.longitude;
+      const lat = position.coords.latitude;
+
+      console.log(`longitude: ${lng} | latitude: ${lat}`);
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(displayLocationInfo);
+    }
   }
 
   // function gets called when submit button is clicked in zipcode view
