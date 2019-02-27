@@ -1,11 +1,8 @@
 node_modules/
 bower_components/
 *.log
-
 build/
-
-client/dist/;
-
+client/dist/
 .env
 database/sensitive-data.js
 package-lock.json
