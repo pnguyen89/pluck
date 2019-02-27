@@ -150,8 +150,12 @@ app.post('/user/info', (req, res) => {
 //   get req to api for directions to plant
 //   should send location/address of plant
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3001;
 
+// Listen and console log current port //
 app.listen(port, () => {
-  console.log(`listening on port ${port}`);
+  console.log(`listening on port ${port}!`);
 });
+
+module.exports.app = app;
+module.exports.port = port;
