@@ -1,4 +1,6 @@
 const mysql = require('mysql');
+// require('dotenv').config();
+const _ = require('lodash');
 
 const connection = mysql.createConnection({
   host: process.env.DBHOST,
@@ -39,7 +41,7 @@ module.exports.getImageByGivenCategory = (category, callback) => {
       callback(null, imageUrl);
     }
   });
-}
+};
 
 module.exports.getPlantsByGivenZipcode = (zipcode, callback) => {
   connection.query('SELECT * FROM plants WHERE zipcode = ?', [zipcode], (err, plants) => {
@@ -91,15 +93,46 @@ module.exports.getSaltByGivenUsername = (username, callback) => {
   });
 };
 
-module.exports.addPlant = (userId, title, desc, address, zipcode, imageUrl, callback) => {
-  connection.query('INSERT INTO plants(id_user, title, description, address, zipcode, image_url, status) VALUES(?, ?, ?, ?, ?, ?, "show")', [userId, title, desc, address, zipcode, imageUrl], (err, plant) => {
+module.exports.insertPlantData = (planttype, imagelink, callback) => {
+  const q = [planttype, imagelink];
+  connection.query('SELECT * FROM plantData', (err, oldPlants) => {
     if (err) {
-      callback(err);
+      callback(err, null);
     } else {
-      callback(null, plant);
+      const plants = _.map(oldPlants, (oldPlant) => {
+        return oldPlant['planttype'];
+      });
+      if (!_.includes(plants, planttype)) {
+        connection.query('INSERT INTO plantData (planttype, imagelink) VALUES (?, ?)', q, (err2) => {
+          if (err2) {
+            callback(err2, null);
+          } else {
+            connection.query(`SELECT * FROM plantData WHERE planttype = '${planttype}'`, (err3, plant) => {
+              if (err3) {
+                callback(err3, null);
+              } else {
+                callback(null, plant);
+              }
+            });
+          }
+        });
+      } else {
+        callback(null, 'Already Exists');
+      }
     }
   });
 };
+
+module.exports.selectAllPlantData = (callback) => {
+  connection.query('SELECT * FROM plantData', (err, plants) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, plants);
+    }
+  });
+};
+
 
 module.exports.getUserIdByGivenUsername = (username, callback) => {
   connection.query('SELECT id FROM users WHERE username = ?', [username], (err, userId) => {
@@ -120,31 +153,3 @@ module.exports.getUserByGivenUsername = (username, callback) => {
     }
   });
 };
-
-
-
-// TODO: login----getUser
-
-
-// -------------------------------- TABLE LIST --------------------------------
-//
-// -- users
-// -- | id(integer) | username(255 max) | hpass(255 max) | salt(255 max) |
-//
-//
-// -- plants
-// -- | id(integer) | id_user(integer) | title(255 max) | description(500 max) | address(255 max) | zipcode(integer) | image_url(255 max) | status('hide', 'show') |
-//
-//
-// -- favorites
-// -- | id(integer) | id_user(integer) | id_plant(integer) |
-//
-//
-// -- categories
-// -- | id(integer) | category(255 max) |
-//
-//
-// -- plants_categories
-// -- | id(integer) | id_plant(integer) | id_category(integer) |
-//
-// -------------------------------- END OF LIST --------------------------------
