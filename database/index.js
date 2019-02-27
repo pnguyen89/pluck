@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-require('dotenv').config();
+// require('dotenv').config();
 const _ = require('lodash');
 
 // the SENSITIVEDATA is git ignored. Remake locally for testing // replaced file with env variables
@@ -11,9 +11,10 @@ const connection = mysql.createConnection({
   host: process.env.DBHOST,
   // user: 'root',
   user: process.env.DBUSERNAME,
-  // password: '',
+  // password: 'password',
   password: process.env.DBPASSWORD,
   database: process.env.DBNAME,
+  // database: 'pluck',
 });
 
 connection.connect((err) => {
@@ -50,7 +51,7 @@ module.exports.getImageByGivenCategory = (category, callback) => {
       callback(null, imageUrl);
     }
   });
-}
+};
 
 module.exports.getPlantsByGivenZipcode = (zipcode, callback) => {
   connection.query('SELECT * FROM plants WHERE zipcode = ?', [zipcode], (err, plants) => {
