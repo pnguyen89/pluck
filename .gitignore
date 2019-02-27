@@ -6,3 +6,4 @@ client/dist/
 .env
 database/sensitive-data.js
 package-lock.json
+bundle.js
