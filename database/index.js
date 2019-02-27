@@ -118,17 +118,6 @@ module.exports.insertUserPlant = (iduser, idplant, callback) => {
   });
 };
 
-module.exports.insertUserLikedPlant = (iduser, idplant, callback) => {
-  const q = [iduser, idplant];
-  connection.query('INSERT INTO usersLiked (iduser, idplant) VALUES (?, ?)', q, (err) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      console.log('nice');
-    }
-  });
-};
-
 module.exports.selectSinglePlant = (idplant, callback) => {
   connection.query(`SELECT * FROM plants WHERE id = ${idplant}`, (err, singlePlantArray) => {
     if (err) {
@@ -238,18 +227,22 @@ module.exports.selectAllUsersLikes = (iduser, callback) => {
       return combo.idplant;
     });
     const returnPlants = [];
-    _.forEach(plantIds, (id, index) => {
-      module.exports.selectSinglePlant(id, (err, plant) => {
-        if (err) {
-          callback(err, null);
-        } else {
-          returnPlants.push(plant);
-          if (index === plantIds.length - 1) {
-            callback(null, returnPlants);
+    if (plantIds.length === 0) {
+      callback(null, []);
+    } else {
+      _.forEach(plantIds, (id, index) => {
+        module.exports.selectSinglePlant(id, (err, plant) => {
+          if (err) {
+            callback(err, null);
+          } else {
+            returnPlants.push(plant);
+            if (index === plantIds.length - 1) {
+              callback(null, returnPlants);
+            }
           }
-        }
+        });
       });
-    });
+    }
   });
 };
 
@@ -323,3 +316,64 @@ module.exports.getUserByGivenUsername = (username, callback) => {
   });
 };
 
+module.exports.updateUserLikedPlant = (iduser, idplant, callback) => {
+  const q = [iduser, idplant];
+  module.exports.selectAllUsersLikes(iduser, (err, likes) => {
+    if (err) {
+      callback(err, null);
+    } else if (likes.length === 0) {
+      connection.query('INSERT INTO usersLiked (iduser, idplant) VALUES (?, ?)', q, (err2) => {
+        if (err2) {
+          callback(err, null);
+        } else {
+          module.exports.updatePlantLikes(idplant, true, (err3, updatedPlant) => {
+            if (err3) {
+              callback(err, null);
+            } else {
+              callback(null, updatedPlant);
+            }
+          });
+        }
+      });
+    } else {
+      const plantIds = _.map(likes, (plant) => {
+        return plant.id;
+      });
+      if (!_.includes(plantIds, idplant)) {
+        connection.query('INSERT INTO usersLiked (iduser, idplant) VALUES (?, ?)', q, (err2) => {
+          if (err2) {
+            callback(err, null);
+          } else {
+            module.exports.updatePlantLikes(idplant, true, (err3, updatedPlant) => {
+              if (err3) {
+                callback(err3, null);
+              } else {
+                callback(null, updatedPlant);
+              }
+            });
+          }
+        });
+      } else {
+        connection.query(`DELETE FROM usersLiked WHERE iduser = ${iduser} AND idplant = ${idplant}`, (err4, res) => {
+          if (err4) {
+            callback(err4, null);
+          } else {
+            module.exports.updatePlantLikes(idplant, false, (err5) => {
+              if (err5) {
+                callback(err5, null);
+              } else {
+                module.exports.selectAllUsersLikes(iduser, (err6, updatedLikes) => {
+                  if (err6) {
+                    callback(err6, null);
+                  } else {
+                    callback(null, updatedLikes);
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    }
+  });
+};
