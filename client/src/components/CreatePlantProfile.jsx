@@ -82,6 +82,8 @@ class PlantProfile extends React.Component {
       loggedIn: false,
       currency: 'Select',
       username: props.username,
+      address: '',
+      zipcode: '',
     };
     this.getPlantType = this.getPlantType.bind(this);
     this.fileSelectHandler = this.fileSelectHandler.bind(this);
@@ -100,6 +102,16 @@ class PlantProfile extends React.Component {
     if (event.target.id === 'description') {
       this.setState({
         description: event.target.value,
+      });
+    }
+    if (event.target.id === 'address') {
+      this.setState({
+        address: event.target.value,
+      });
+    }
+    if (event.target.id === 'zip code') {
+      this.setState({
+        zipcode: event.target.value,
       });
     }
   }
@@ -179,6 +191,8 @@ class PlantProfile extends React.Component {
       description,
       image,
       username,
+      address,
+      zipcode
     } = this.state;
 
     // change state to redirect to myProfile
@@ -186,7 +200,7 @@ class PlantProfile extends React.Component {
     // send post req to server to save new plant info in plants table
     // add plant to users profile page
     // need to send through userId, type, description, address, zipcode, image
-    axios.post('/plant/profile', { currency, description, image, username })
+    axios.post('/plant/profile', { currency, description, image, username, address, zipcode })
       .then((res) => { console.log(res); })
       .catch((err) => { console.log(err); });
 
@@ -232,6 +246,24 @@ class PlantProfile extends React.Component {
               </MenuItem>
             ))}
           </TextField>
+        </form>
+        <form className={classes.container} noValidate autoComplete="off">
+          <TextField
+            id="outlined-with-placeholder"
+            label="Zip code"
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+            onChange={this.onChange}
+          />
+          <TextField
+            id="outlined-with-placeholder"
+            label="Address"
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+            onChange={this.onChange}
+          />
         </form>
         <form className={classes.container} noValidate autoComplete="off">
 

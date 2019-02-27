@@ -2,20 +2,28 @@ require('dotenv').config();
 const mysql = require('mysql');
 
 
-const SENSITIVEDATA = {
+// const SENSITIVEDATA = {
+//   // host: process.env.DBHOST,
+//   user: 'root',
+//   // user: process.env.DBUSERNAME,
+//   password: '',
+//   // password: process.env.DBPASSWORD,
+//   database: 'pluck',
+//   // port: process.env.DBPORT,
+// }; // the SENSITIVEDATA is git ignored. Remake locally for testing // replaced file with env variables
+
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ POSSIBLY USELESS ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+const connection = mysql.createConnection({
   host: process.env.DBHOST,
   // user: 'root',
   user: process.env.DBUSERNAME,
   // password: '',
   password: process.env.DBPASSWORD,
   database: process.env.DBNAME,
-  port: process.env.DBPORT,
-}; // the SENSITIVEDATA is git ignored. Remake locally for testing // replaced file with env variables
-
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ POSSIBLY USELESS ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-const connection = mysql.createConnection(SENSITIVEDATA);
+});
 
 // DB HELPERS //
 // all functions are named to explicitly state usage
