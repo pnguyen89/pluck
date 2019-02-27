@@ -8,12 +8,12 @@ import * as MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-d
 
 var map;
 var directions;
-mapboxgl.accessToken = config.pubKey
+mapboxgl.accessToken = config.pubKey;
 
 const dotenv = require('dotenv').config();  
 
 const Map = ReactMapboxGl({
-    accessToken: config.pubKey
+    accessToken: config.pubKey,
 });
 
 class MapView extends React.Component {
