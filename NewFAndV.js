@@ -67,4 +67,4 @@ const possibleFinalGardenArray = {
 //   connection.insertPlantData(planttype, link, (err, res) => {
 //     console.log(res);
 //   });
-// })
+// });

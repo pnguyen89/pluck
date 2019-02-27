@@ -32,27 +32,6 @@ module.exports.connection = connection;
 
 // This is a good test to see if we are successfully connected to our database
 
-
-module.exports.getImageByGivenCategory = (category, callback) => {
-  connection.query('SELECT image_url FROM categories WHERE category = ?', [category], (err, imageUrl) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, imageUrl);
-    }
-  });
-};
-
-module.exports.getPlantsByGivenZipcode = (zipcode, callback) => {
-  connection.query('SELECT * FROM plants WHERE zipcode = ?', [zipcode], (err, plants) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, plants);
-    }
-  });
-};
-
 module.exports.addFavorite = (userId, plantId, callback) => {
   connection.query('INSERT INTO favorites(id_user, id_plant) VALUES(?, ?)', [userId, plantId], (err, favorite) => {
     if (err) {
@@ -118,13 +97,17 @@ module.exports.insertPlant = (plant, address, zipcode, iduser, callback) => {
   });
 };
 
+// module.exports.insertPlant('Apples', '1725 Delachaise St., Apt#108, New Orleans, LA', 70115, 1, (err, res) => {
+//   return err;
+// });
+
 module.exports.insertUserPlant = (iduser, idplant, callback) => {
   const q = [iduser, idplant];
   connection.query('INSERT INTO usersPlants (iduser, idplant) VALUES (?, ?)', q, (err) => {
     if (err) {
       callback(err, null);
     } else {
-      module.exports.selectAllOfAUsersPlants(iduser, (err2, plants) => {
+      module.exports.selectAllUsersPlants(iduser, (err2, plants) => {
         if (err2) {
           callback(err2, null);
         } else {
@@ -135,7 +118,92 @@ module.exports.insertUserPlant = (iduser, idplant, callback) => {
   });
 };
 
-module.exports.selectAllOfAUsersPlants = (iduser, callback) => {
+module.exports.insertUserLikedPlant = (iduser, idplant, callback) => {
+  const q = [iduser, idplant];
+  connection.query('INSERT INTO usersLiked (iduser, idplant) VALUES (?, ?)', q, (err) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      console.log('nice');
+    }
+  });
+};
+
+module.exports.selectSinglePlant = (idplant, callback) => {
+  connection.query(`SELECT * FROM plants WHERE id = ${idplant}`, (err, singlePlantArray) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, singlePlantArray[0]);
+    }
+  });
+};
+
+module.exports.updatePlantLikes = (idplant, bool, callback) => {
+  if (bool === true) {
+    module.exports.selectSinglePlant(idplant, (err, plant) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        connection.query(`UPDATE plants SET likes = ${plant.likes + 1} WHERE id = ${idplant}`, (err2) => {
+          if (err2) {
+            callback(err2, null);
+          } else {
+            module.exports.selectSinglePlant(idplant, (err3, updatedPlant) => {
+              if (err3) {
+                callback(err3, null);
+              } else {
+                callback(null, updatedPlant);
+              }
+            });
+          }
+        });
+      }
+    });
+  } else if (bool === false) {
+    module.exports.selectSinglePlant(idplant, (err, plant) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        connection.query(`UPDATE plants SET likes = ${plant.likes - 1} WHERE id = ${idplant}`, (err2) => {
+          if (err2) {
+            callback(err2, null);
+          } else {
+            module.exports.selectSinglePlant(idplant, (err3, updatedPlant) => {
+              if (err3) {
+                callback(err3, null);
+              } else {
+                callback(null, updatedPlant);
+              }
+            });
+          }
+        });
+      }
+    });
+  } else {
+    callback(Error("Incorrect 'bool' value!"), null);
+  }
+};
+
+// module.exports.updatePlantLikes(1, true, (err, res) => {
+//   console.log(err, res);
+// });
+
+module.exports.selectAllZipcodePlants = (zipcode, callback) => {
+  connection.query(`SELECT * FROM plants WHERE zipcode = ${zipcode}`, (err, plants) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, plants);
+    }
+  });
+};
+
+// module.exports.selectAllZipcodePlants(70115, (err, res) => {
+//   console.log(err, res);
+// });
+
+module.exports.selectAllUsersPlants = (iduser, callback) => {
   connection.query(`SELECT * FROM usersPlants WHERE iduser = ${iduser}`, (err, plants) => {
     if (err) {
       callback(err, null);

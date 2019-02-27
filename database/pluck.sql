@@ -25,7 +25,8 @@ CREATE TABLE plants (
   plant TEXT NOT NULL,
   address TEXT(4294967295) NOT NULL,
   zipcode INT NOT NULL,
-  toggled BOOLEAN DEFAULT false,
+  toggled BOOLEAN DEFAULT 0,
+  likes INT NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 );
 
@@ -41,6 +42,13 @@ CREATE TABLE plantData (
 
 -- JOIN table, holds user/plant links
 CREATE TABLE usersPlants (
+  id INTEGER AUTO_INCREMENT NOT NULL,
+  iduser INTEGER NOT NULL,
+  idplant INTEGER NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE usersLiked (
   id INTEGER AUTO_INCREMENT NOT NULL,
   iduser INTEGER NOT NULL,
   idplant INTEGER NOT NULL,
