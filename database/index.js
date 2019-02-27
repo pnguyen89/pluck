@@ -42,12 +42,13 @@ module.exports.addFavorite = (userId, plantId, callback) => {
   });
 };
 
-module.exports.addUser = (username, pass, salt, zipcode, callback) => {
-  connection.query('INSERT INTO users(username, hpass, salt, zipcode) VALUES(?, ?, ?, ?)', [username, salt + pass, salt, zipcode], (err, user) => {
+module.exports.insertUser = (username, password, salt, address, zipcode, callback) => {
+  const q = [username, password, salt, address, zipcode];
+  connection.query('INSERT INTO users (username, password, salt, address, zipcode) VALUES (?, ?, ?, ?, ?)', (err, res) => {
     if (err) {
-      callback(err);
+      callback(err, null);
     } else {
-      callback(null, user);
+      // DO LATER //////////////////////////////////////////////////////////////////////////////////////////////////////
     }
   });
 };

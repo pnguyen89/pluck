@@ -69,6 +69,6 @@ const possibleFinalGardenArray = {
 //   });
 // });
 
-connection.updateUserLikedPlant(1, 1, (err, res) => {
-  console.log(err, res);
-});
+// connection.updateUserLikedPlant(1, 1, (err, res) => {
+//   console.log(err, res);
+// });

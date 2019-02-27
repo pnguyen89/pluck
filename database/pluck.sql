@@ -9,12 +9,12 @@ USE pluck;
 -- USERS table to hold id, address, zip, username and hashed password
 CREATE TABLE users (
   id INTEGER AUTO_INCREMENT NOT NULL,
-  address TEXT(4294967295) NOT NULL,
-  zipcode INT NOT NULL,
   username VARCHAR(50) NOT NULL,
   password TEXT(4294967295) NOT NULL,
   salt VARCHAR(100) NOT NULL,
-  loggedIn VARCHAR(50) NOT NULL DEFAULT 'true',
+  address TEXT(4294967295) NOT NULL,
+  zipcode INT NOT NULL,
+  loggedIn BOOLEAN DEFAULT 1,
   PRIMARY KEY (id)
 );
 
