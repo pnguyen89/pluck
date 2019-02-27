@@ -10,8 +10,6 @@ let map;
 let directions;
 mapboxgl.accessToken = config.pubKey;
 
-const dotenv = require('dotenv').config();
-
 const Map = ReactMapboxGl({
   accessToken: config.pubKey,
 });
@@ -30,6 +28,7 @@ class MapView extends React.Component {
 
   componentDidMount() {
     // add destination property to directions? to render map with plant's address as destination
+    debugger;
     this.setState = {
       userLoc: dl.getUserLoc(),
     };
