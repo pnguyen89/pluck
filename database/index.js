@@ -31,16 +31,7 @@ module.exports.connection = connection;
 
 
 // This is a good test to see if we are successfully connected to our database
-module.exports.selectAllPlants = (callback) => {
-  connection.query('SELECT * FROM plants', (err, plants) => {
-    if (err) {
-      console.log(err);
-      callback(err);
-    } else {
-      callback(null, plants);
-    }
-  });
-};
+
 
 module.exports.getImageByGivenCategory = (category, callback) => {
   connection.query('SELECT image_url FROM categories WHERE category = ?', [category], (err, imageUrl) => {
@@ -50,20 +41,10 @@ module.exports.getImageByGivenCategory = (category, callback) => {
       callback(null, imageUrl);
     }
   });
-}
+};
 
 module.exports.getPlantsByGivenZipcode = (zipcode, callback) => {
   connection.query('SELECT * FROM plants WHERE zipcode = ?', [zipcode], (err, plants) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, plants);
-    }
-  });
-};
-
-module.exports.getPlantsByGivenUserId = (userId, callback) => {
-  connection.query('SELECT * FROM plants WHERE id_user = ?', [userId], (err, plants) => {
     if (err) {
       callback(err);
     } else {
@@ -102,6 +83,16 @@ module.exports.getSaltByGivenUsername = (username, callback) => {
   });
 };
 
+module.exports.selectAllPlants = (callback) => {
+  connection.query('SELECT * FROM plants', (err, plants) => {
+    if (err) {
+      console.log(err);
+      callback(err);
+    } else {
+      callback(null, plants);
+    }
+  });
+};
 
 module.exports.insertPlant = (plant, address, zipcode, iduser, callback) => {
   const q = [plant, address, zipcode];
@@ -194,6 +185,15 @@ module.exports.selectAllPlantData = (callback) => {
   });
 };
 
+module.exports.selectPlantImage = (planttype, callback) => {
+  connection.query(`SELECT * FROM plantData WHERE planttype = '${planttype}'`, (err, singlePlantArray) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, singlePlantArray[0].imagelink);
+    }
+  });
+};
 
 module.exports.getUserIdByGivenUsername = (username, callback) => {
   connection.query('SELECT id FROM users WHERE username = ?', [username], (err, userId) => {
