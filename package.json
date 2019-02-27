@@ -11,7 +11,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server --open",
-    "build": "webpack"
+    "build": "node ./server/index.js && webpack",
+    "react-dev": "webpack -d --watch"
   },
   "repository": {
     "type": "git",
