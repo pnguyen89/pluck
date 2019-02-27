@@ -7,25 +7,29 @@ const ipLookUp = () => {
     url: 'http://ip-api.com/json',
   }).then((response) => {
     console.log('here', response.data);
-    // callback(null, result);
+    const userLoc = [response.data.lon, response.data.lat];
+    return userLoc;
   }).catch((err) => {
     console.log(err);
-    // callback(err, null);
   });
 };
-ipLookUp();
+// ipLookUp();
 
-const getAddress = (latitude, longitude) => {
-
-  return axios({
-    method: 'get',
-    url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude}, ${longitude}&key=${GOOGLE_MAP_KEY}`,
-  }).then((response) => {
-    console.log('User\'s Address Data is ', response)
-  }).catch((err) => {
-    console.log('Request failed.  Returned status of', err);
-  });
+const getUserLoc = () => {
+  ipLookUp();
 };
+
+// const getAddress = (latitude, longitude) => {
+
+//   return axios({
+//     method: 'get',
+//     url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude}, ${longitude}&key=${GOOGLE_MAP_KEY}`,
+//   }).then((response) => {
+//     console.log('User\'s Address Data is ', response)
+//   }).catch((err) => {
+//     console.log('Request failed.  Returned status of', err);
+//   });
+// };
 
 // if ('geolocation' in navigator) {
 //   // check if geolocation is supported/enabled on current browser
@@ -45,3 +49,4 @@ const getAddress = (latitude, longitude) => {
 //   console.log('geolocation is not enabled on this browser');
 //   ipLookUp();
 // }
+module.exports.getUserLoc = getUserLoc;

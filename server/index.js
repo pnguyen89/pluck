@@ -149,7 +149,7 @@ app.post('/user/info', (req, res) => {
 //   get req to api for directions to plant
 //   should send location/address of plant
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3001;
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);

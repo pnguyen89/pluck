@@ -1,19 +1,19 @@
 import React from 'react';
 import axios from 'axios';
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
-import config from '../../../config'
+import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 import * as MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+import config from '../../../config';
+import dl from './detect_location.js';
 
-
-var map;
-var directions;
+let map;
+let directions;
 mapboxgl.accessToken = config.pubKey;
 
-const dotenv = require('dotenv').config();  
+const dotenv = require('dotenv').config();
 
 const Map = ReactMapboxGl({
-    accessToken: config.pubKey,
+  accessToken: config.pubKey,
 });
 
 class MapView extends React.Component {
@@ -21,17 +21,24 @@ class MapView extends React.Component {
     super(props);
     // create state that is set to the plant's adress
     this.state = {
-        address: []
-    }
+      // address: [],
+      userLoc: '',
+      plantLoc: '',
+    };
     this.getAddress = this.getAddress.bind(this);
-}
+  }
 
   componentDidMount() {
     // add destination property to directions? to render map with plant's address as destination
+    this.setState = {
+      userLoc: dl.getUserLoc(),
+    };
+    const { userLoc } = this.state;
+    console.log(userLoc);
     map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-98.5795, 39.8283],
+      center: userLoc,
       zoom: 3,
     });
     directions = new MapboxDirections({
@@ -41,9 +48,9 @@ class MapView extends React.Component {
     });
     map.addControl(directions, 'top-left');
     directions.setOrigin([-90.069800, 29.972890]);
-    directions.setDestination('1560 North Rocheblave Street');
+    directions.setDestination('522 Montegut Street');
     this.getAddress();
-}
+  }
 
   getAddress() {
     axios.get('/health')
@@ -53,7 +60,6 @@ class MapView extends React.Component {
         this.setState({ address: plant.address });
       });
   }
-
 
   render() {
     return (
