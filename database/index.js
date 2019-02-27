@@ -31,7 +31,7 @@ module.exports.connection = connection;
 
 
 // This is a good test to see if we are successfully connected to our database
-module.exports.getAllPlants = (callback) => {
+module.exports.selectAllPlants = (callback) => {
   connection.query('SELECT * FROM plants', (err, plants) => {
     if (err) {
       console.log(err);
@@ -98,6 +98,58 @@ module.exports.getSaltByGivenUsername = (username, callback) => {
       callback(err);
     } else {
       callback(null, salt);
+    }
+  });
+};
+
+
+module.exports.insertPlant = (plant, address, zipcode, iduser, callback) => {
+  const q = [plant, address, zipcode];
+  connection.query('INSERT INTO plants (plant, address, zipcode) VALUES (?, ?, ?)', q, (err) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      module.exports.selectAllPlants((err2, oldPlants) => {
+        if (err2) {
+          callback(err2, null);
+        } else {
+          const mostRecent = oldPlants[oldPlants.length - 1];
+          module.exports.insertUserPlant(iduser, mostRecent.id, (err3, userPlant) => {
+            if (err3) {
+              callback(err3, null);
+            } else {
+              callback(null, userPlant);
+            }
+          });
+        }
+      });
+    }
+  });
+};
+
+module.exports.insertUserPlant = (iduser, idplant, callback) => {
+  const q = [iduser, idplant];
+  connection.query('INSERT INTO usersPlants (iduser, idplant) VALUES (?, ?)', q, (err) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      module.exports.selectAllOfAUsersPlants(iduser, (err2, plants) => {
+        if (err2) {
+          callback(err2, null);
+        } else {
+          callback(null, plants[plants.length - 1]);
+        }
+      });
+    }
+  });
+};
+
+module.exports.selectAllOfAUsersPlants = (iduser, callback) => {
+  connection.query(`SELECT * FROM usersPlants WHERE iduser = ${iduser}`, (err, plants) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, plants);
     }
   });
 };

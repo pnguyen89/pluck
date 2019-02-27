@@ -64,7 +64,7 @@ const possibleFinalGardenArray = {
 };
 
 // _.forEach(possibleFinalGardenArray, (link, planttype) => {
-//   connection.addPlant(planttype, link, (err, res) => {
+//   connection.insertPlantData(planttype, link, (err, res) => {
 //     console.log(res);
 //   });
 // })
