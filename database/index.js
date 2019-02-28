@@ -1,6 +1,8 @@
 const mysql = require('mysql');
 // require('dotenv').config();
 const _ = require('lodash');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 // the SENSITIVEDATA is git ignored. Remake locally for testing // replaced file with env variables
 
@@ -43,13 +45,41 @@ module.exports.addFavorite = (userId, plantId, callback) => {
   });
 };
 
-module.exports.insertUser = (username, password, salt, address, zipcode, callback) => {
-  const q = [username, password, salt, address, zipcode];
-  connection.query('INSERT INTO users (username, password, salt, address, zipcode) VALUES (?, ?, ?, ?, ?)', (err, res) => {
+module.exports.insertUser = (username, password, address, zipcode, callback) => {
+  module.exports.selectAllUsers((err, users) => {
+    const allUsernames = _.map(users, (user) => {
+      return user.username;
+    });
+    if (!_.includes(allUsernames, username)) {
+      const salt = crypto.randomBytes(16).toString('hex');
+      const q = [username, crypto.pbkdf2Sync(password, salt, 1012, 50, 'sha512').toString('hex'), salt, address, zipcode];
+      connection.query('INSERT INTO users (username, password, salt, address, zipcode) VALUES (?, ?, ?, ?, ?)', q, (err2, res) => {
+        if (err2) {
+          callback(err2, null);
+        } else {
+          module.exports.selectAllUsers((err3, newUsers) => {
+            if (err3) {
+              callback(err3, null);
+            } else {
+              callback(null, newUsers[newUsers.length - 1]);
+            }
+          });
+        }
+      });
+    } else {
+      callback(Error('User already exists'), null);
+    }
+  });
+};
+
+module.exports.selectAllUsers = (callback) => {
+  // get all users from db
+  connection.query('SELECT * FROM users', (err, users) => {
     if (err) {
       callback(err, null);
     } else {
-      // DO LATER //////////////////////////////////////////////////////////////////////////////////////////////////////
+      // send back all users
+      callback(null, users);
     }
   });
 };
