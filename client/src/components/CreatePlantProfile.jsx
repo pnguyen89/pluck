@@ -186,7 +186,18 @@ class PlantProfile extends React.Component {
     // send post req to server to save new plant info in plants table
     // add plant to users profile page
     // need to send through userId, type, description, address, zipcode, image
-    axios.post('/plant/profile', { currency, description, image, username })
+    // axios.post('/plant/profile', { currency, description, image, username })
+    axios({
+      method: 'post',
+      url: '/plant/user'
+      data: {
+        username: 'acreed1998' || this.state.username,
+        currency: 'Apples' || this.state.currency,
+        address: 'Pretend This String Is An Address' || this.state.address,
+        zipcode: '70115' || this.state.zipcode,
+        description: 'This is a description' || this.state.description,
+      },
+    })
       .then((res) => { console.log(res); })
       .catch((err) => { console.log(err); });
 
