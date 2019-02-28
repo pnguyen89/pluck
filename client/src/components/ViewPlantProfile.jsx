@@ -100,12 +100,20 @@ class ViewPlantProfile extends React.Component {
     console.log('favorite button clicked');
     // const { userId } = this.state;
     // const { plantId } = this.props;
-    // // post request to server
-    // //  add plant to users favs
-    // //  send user id + plant id
-    // axios.post('/user/favorite', { userId, plantId })
-    //   .then((res) => { console.log(res); })
-    //   .catch((err) => { console.log(err); });
+    // post request to server
+    //  add plant to users favs
+    //  send user id + plant id
+    // axios.put('/user/favorite', { userId, plantId })
+    axios({
+      method: 'put',
+      url: '/likes',
+      data: {
+        iduser: '1' || this.state.userId,
+        idplant: '1' || this.state.idplant,
+      },
+    })
+      .then((res) => { console.log(res); })
+      .catch((err) => { console.log(err); });
   }
 
   deleteButton() {

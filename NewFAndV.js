@@ -64,7 +64,25 @@ const possibleFinalGardenArray = {
 };
 
 // _.forEach(possibleFinalGardenArray, (link, planttype) => {
-//   connection.addPlant(planttype, link, (err, res) => {
+//   connection.insertPlantData(planttype, link, (err, res) => {
 //     console.log(res);
 //   });
-// })
+// });
+
+// connection.updateUserLikedPlant(1, 1, (err, res) => {
+//   console.log(err, res);
+// });
+
+// connection.insertUser('acreed1998', 'tigerlamb345', '1725 Delachaise St., Apt#108, New Orleans, LA', 70115, (err, res) => {
+//   console.log(err, res);
+// });
+
+// connection.verifyUser('acreed1998', 'tigerlamb345', (err, res) => {
+//   console.log(err, res);
+// });
+
+// for (let i = 0; i < 10; i++) {
+//   connection.insertPlant(1, 'Apples', '1725 Delachaise St., Apt#108, New Orleans, LA', 70115, "These Are Some Good Apples", (err, res) => {
+//     console.log(err, res);
+//   });
+// }
