@@ -598,3 +598,37 @@ module.exports.selectAllPlantsComments = (idplant, callback) => {
     }
   });
 };
+
+module.exports.deletePlant = (idplant, callback) => {
+  connection.query(`DELETE FROM comments WHERE idplant = ${idplant}`, (err) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      connection.query(`DELETE FROM usersLiked WHERE idplant = ${idplant}`, (err2) => {
+        if (err2) {
+          callback(err2, null);
+        } else {
+          connection.query(`DELETE FROM usersPlants WHERE idplant = ${idplant}`, (err3) => {
+            if (err3) {
+              callback(err3, null);
+            } else {
+              connection.query(`DELETE FROM plants WHERE id = ${idplant}`, (err4) => {
+                if (err4) {
+                  callback(err4, null);
+                } else {
+                  module.exports.selectAllPlants((err5, plants) => {
+                    if (err5) {
+                      callback(err5, null);
+                    } else {
+                      callback(null, plants);
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+};
