@@ -190,8 +190,18 @@ module.exports.selectSinglePlant = (idplant, callback) => {
     if (err) {
       callback(err, null);
     } else {
-      // send back the plant
-      callback(null, singlePlantArray[0]);
+      const returnObject = singlePlantArray[0];
+      // get the plant's imagelink
+      module.exports.selectPlantImage(returnObject.plant, (err2, imagelink) => {
+        if (err2) {
+          callback(err2, null);
+        } else {
+          // set the imagelink
+          returnObject.imagelink = imagelink;
+          // return the object
+          callback(null, returnObject);
+        }
+      });
     }
   });
 };

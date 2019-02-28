@@ -9,8 +9,8 @@ const app = express();
 app.use(express.static(`${__dirname}/../client/dist`));
 app.use(bodyParser.json());
 
-app.get('/health', (req, res) => {
-  dbHelpers.getAllPlants((err, plants) => { // change this function name to test other db helpers
+app.get('/allplants', (req, res) => {
+  dbHelpers.selectAllPlants((err, plants) => { // change this function name to test other db helpers
     if (err) {
       console.log(err);
       res.status(500).send('COULD NOT RETRIEVE PLANTS');
@@ -25,15 +25,13 @@ app.get('/health', (req, res) => {
 
 
 app.get('/user/profile', (req, res) => {
-  dbHelpers.getUserIdByGivenUsername(req.query.username, (err, userId) => {
+  dbHelpers.selectUsersByUsername(req.query.username, (err, user) => {
     if (err) {
-      console.log(err);
-      res.status(500).send('COULD NOT RETRIEVE ID_USER');
+      res.status(500).send('UNABLE TO RETEIVE USER THROUGH USERNAME');
     } else {
-      dbHelpers.getPlantsByGivenUserId(userId, (err, plants) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send('COULD NOT RETRIEVE PLANTS');
+      dbHelpers.selectAllUsersPlants(user.id, (err2, plants) => {
+        if (err2) {
+          res.status(500).send('UNABLE TO RETRIEVE THE USERS PLANTS');
         } else {
           res.status(200).send(plants);
         }
