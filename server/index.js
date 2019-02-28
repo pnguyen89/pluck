@@ -137,7 +137,7 @@ app.put('/user/login', (req, res) => {
 app.get('/zipcode', (req, res) => {
   console.log(req.query);
   // get all plants in the zipcode
-  dbHelpers.selectAllZipcodePlants(parseInt(req.body.zipcode), (err, plants) => {
+  dbHelpers.selectAllZipcodePlants(parseInt(req.query.zipcode), (err, plants) => {
     if (err) {
       console.log(err);
       res.status(500).send('COULD NOT RETRIEVE NEARBY PLANTS');
@@ -175,6 +175,16 @@ app.post('/newuser', (req, res) => {
     } else {
       // send back the new user's data
       res.status(204).send(data);
+    }
+  });
+});
+
+app.put('/likes', (req, res) => {
+  dbHelpers.updateUserLikedPlant(parseInt(req.body.iduser), parseInt(req.body.idplant), (err, data) => {
+    if (err) {
+      res.status(500).send('Something went wrong while trying to update user');
+    } else {
+      res.status(202).send(data);
     }
   });
 });
