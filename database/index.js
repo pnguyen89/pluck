@@ -579,6 +579,22 @@ module.exports.selectAllComments = (callback) => {
   });
 };
 
-module.exports.selectAllUsersComments = (iduser) => {
+module.exports.selectAllUsersComments = (iduser, callback) => {
+  connection.query(`SELECT * FROM comments WHERE iduser = ${iduser}`, (err, comments) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, comments);
+    }
+  });
+};
 
+module.exports.selectAllPlantsComments = (idplant, callback) => {
+  connection.query(`SELECT * FROM comments WHERE idplant = ${idplant}`, (err, comments) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, comments);
+    }
+  });
 };
