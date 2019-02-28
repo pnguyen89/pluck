@@ -56,7 +56,11 @@ CREATE TABLE usersLiked (
   PRIMARY KEY (id)
 );
 
--- CREATE TABLE comments (
-
-
--- );
+CREATE TABLE comments (
+  id INTEGER AUTO_INCREMENT NOT NULL,
+  iduser INTEGER NOT NULL,
+  idplant INTEGER NOT NULL,
+  comment TEXT(4294967295) NOT NULL,
+  hourcreated INTEGER NOT NULL,
+  minutecreated INTEGER NOT NULL,
+);

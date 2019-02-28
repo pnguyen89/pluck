@@ -547,4 +547,38 @@ module.exports.updateUserLikedPlant = (iduser, idplant, callback) => {
   });
 };
 
+module.exports.insertComment = (iduser, idplant, comment, callback) => {
+  // get the date
+  const date = new Date();
+  const q = [parseInt(iduser), parseInt(idplant), comment, date.getHours(), date.getMinutes()];
+  // insert new comment
+  connection.query('INSERT INTO comments (iduser, idplant, comment, hourcreated, minutecreated) VALUES (?, ?, ?, ?, ?)', q, (err) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      // get all comments
+      module.exports.selectAllComments((err2, comments) => {
+        if (err2) {
+          callback(err2, null);
+        } else {
+          // send back the comment we just created
+          callback(null, comments[comments.length - 1]);
+        }
+      });
+    }
+  });
+};
 
+module.exports.selectAllComments = (callback) => {
+  connection.query('SELECT * FROM comments', (err, comments) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, comments);
+    }
+  });
+};
+
+module.exports.selectAllUsersComments = (iduser) => {
+
+};
