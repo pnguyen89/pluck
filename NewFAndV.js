@@ -80,3 +80,9 @@ const possibleFinalGardenArray = {
 // connection.verifyUser('acreed1998', 'tigerlamb345', (err, res) => {
 //   console.log(err, res);
 // });
+
+// for (let i = 0; i < 10; i++) {
+//   connection.insertPlant('Apples', '1725 Delachaise St., Apt#108, New Orleans, LA', 70115, 1, (err, res) => {
+//     console.log(err, res);
+//   });
+// }

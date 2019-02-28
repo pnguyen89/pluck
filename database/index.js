@@ -36,41 +36,54 @@ module.exports.connection = connection;
 // This is a good test to see if we are successfully connected to our database
 
 module.exports.insertUser = (username, password, address, zipcode, callback) => {
+  // get all users
   module.exports.selectAllUsers((err, users) => {
+    // get usernames of all users as an array
     const allUsernames = _.map(users, (user) => {
       return user.username;
     });
     if (!_.includes(allUsernames, username)) {
+      // generate random salt
       const salt = crypto.randomBytes(16).toString('hex');
+      // generate the password for insertion
       const q = [username, crypto.pbkdf2Sync(password, salt, 1012, 50, 'sha512').toString('hex'), salt, address, zipcode];
+      // insert the new user to the db
       connection.query('INSERT INTO users (username, password, salt, address, zipcode) VALUES (?, ?, ?, ?, ?)', q, (err2, res) => {
         if (err2) {
           callback(err2, null);
         } else {
+          // select all users
           module.exports.selectAllUsers((err3, newUsers) => {
             if (err3) {
               callback(err3, null);
             } else {
+              // send back the new user
               callback(null, newUsers[newUsers.length - 1]);
             }
           });
         }
       });
     } else {
+      // send error if user already exists
       callback(Error('User already exists'), null);
     }
   });
 };
 
 module.exports.verifyUser = (username, password, callback) => {
+  // get a single user through their username
   module.exports.selectUsersByUsername(username, (err, user) => {
     if (err) {
       callback(err, null);
     } else {
+      // pass the entered password through the hashing function to get a hash for it
       const comparisonPassword = crypto.pbkdf2Sync(password, user.salt, 1012, 50, 'sha512').toString('hex');
+      // compare passwords
       if (comparisonPassword === user.password) {
+        // send back true if passwords are same
         callback(null, true);
       } else {
+        // send error if no match
         callback(Error('Invalid Username or Password, Please Try Again'), null);
       }
     }
@@ -78,10 +91,12 @@ module.exports.verifyUser = (username, password, callback) => {
 };
 
 module.exports.selectUsersByUsername = (username, callback) => {
+  // get all users
   module.exports.selectAllUsers((err, users) => {
     if (err) {
       callback(err, null);
     } else {
+      // send back the user whose name matches the input
       callback(null, _.filter(users, (user) => {
         return user.username === username;
       })[0]);
@@ -102,11 +117,12 @@ module.exports.selectAllUsers = (callback) => {
 };
 
 module.exports.selectAllPlants = (callback) => {
+  // get all plants
   connection.query('SELECT * FROM plants', (err, plants) => {
     if (err) {
-      console.log(err);
       callback(err);
     } else {
+      // send back plants
       callback(null, plants);
     }
   });
@@ -459,3 +475,5 @@ module.exports.updateUserLikedPlant = (iduser, idplant, callback) => {
     }
   });
 };
+
+
