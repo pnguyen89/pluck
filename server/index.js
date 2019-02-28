@@ -60,7 +60,7 @@ app.post('/plant/user', (req, res) => {
           res.status(500).send('Something went wrong while saving plant to the database');
         } else {
           // send back the newly created plant
-          res.status(204).send(data);
+          res.status(200).send(data);
         }
       });
     }
@@ -115,7 +115,15 @@ app.put('/user/login', (req, res) => {
       res.status(500).send('Invalid Username or Password');
     } else {
       // send back the user's data
-      res.status(202).send(user);
+      dbHelpers.selectAllUsersPlants(user.id, (err, plants) => {
+        if (plants) {
+          user.plants = plants;
+          res.status(202).send(user);
+        } else {
+          console.log('could not retrieve user plants');
+        }
+      });
+      // res.status(202).send(user);
     }
   });
 });
@@ -174,7 +182,7 @@ app.post('/newuser', (req, res) => {
       res.status(500).send('Invalid Field');
     } else {
       // send back the new user's data
-      res.status(204).send(data);
+      res.status(200).send(data);
     }
   });
 });
@@ -199,6 +207,16 @@ app.delete('/plant', (req, res) => {
   });
 });
 
+app.post('/comments', (req, res) => {
+  dbHelpers.insertComment(parseInt(req.body.iduser), parseInt(req.body.idplant), req.body.comment, (err, comment) => {
+    if (err) {
+      res.status(500).send('Error in saving new comment to database');
+    } else {
+      res.status(200).send(comment);
+    }
+  });
+});
+
 // function to catch get from client plant list view
 //   get req to api for directions to plant
 //   should send location/address of plant
@@ -206,6 +224,7 @@ app.delete('/plant', (req, res) => {
 const port = process.env.PORT || 3001;
 
 // Listen and console log current port //
+
 app.listen(port, () => {
   console.log(`listening on port ${port}!`);
 });
