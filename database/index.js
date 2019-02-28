@@ -2,19 +2,11 @@ const mysql = require('mysql');
 // require('dotenv').config();
 const _ = require('lodash');
 
-// the SENSITIVEDATA is git ignored. Remake locally for testing // replaced file with env variables
-
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ POSSIBLY USELESS ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
 const connection = mysql.createConnection({
   host: process.env.DBHOST,
-  // user: 'root',
   user: process.env.DBUSERNAME,
-  // password: 'password',
   password: process.env.DBPASSWORD,
   database: process.env.DBNAME,
-  // database: 'pluck',
 });
 
 connection.connect((err) => {
@@ -163,4 +155,3 @@ module.exports.getUserByGivenUsername = (username, callback) => {
     }
   });
 };
-

@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { NavLink } from 'react-router-dom'; 
+import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 // import { blue500, red500, greenA200 } from 'material-ui/styles/colors';
 // import SvgIcon from 'material-ui/SvgIcon';
@@ -72,6 +72,8 @@ class ViewPlantProfile extends React.Component {
     this.favoriteButton = this.favoriteButton.bind(this);
     this.getDirections = this.getDirections.bind(this);
     this.getLocation = this.getLocation.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
+    this.toggleButton = this.toggleButton.bind(this);
   }
 
   // doesnt work
@@ -95,15 +97,33 @@ class ViewPlantProfile extends React.Component {
 
   // THIS IS CLOSE TO WORKING BUT NOT QUITE FUNCTIONAL
   favoriteButton() {
+    console.log('favorite button clicked');
     // const { userId } = this.state;
-    // const plantId = this.props.plant.plantId;
-    console.log('CLICKED');
-    // post request to server
-    //  add plant to users favs
-    //  send user id + plant id
+    // const { plantId } = this.props;
+    // // post request to server
+    // //  add plant to users favs
+    // //  send user id + plant id
     // axios.post('/user/favorite', { userId, plantId })
     //   .then((res) => { console.log(res); })
     //   .catch((err) => { console.log(err); });
+  }
+
+  deleteButton() {
+    console.log('delete button clicked');
+    // const { userId } = this.state;
+    // const { plantId } = this.props;
+    // axios.post('/user/delete', { userId, plantId })
+    //   .then(() => console.log('plant removed'))
+    //   .catch((err) => { console.log('could not delete plant', err); });
+  }
+
+  toggleButton() {
+    console.log('toggle button clicked');
+    // const { userId } = this.state;
+    // const { plantId } = this.props;
+    // axios.post('/user/toggle', { userId, plantId })
+    //   .then(() => console.log('plant toggled'))
+    //   .catcch((err) => { console.log(`${err} in toggling plant`); });
   }
 
   showPosition(position) {
@@ -136,10 +156,10 @@ class ViewPlantProfile extends React.Component {
           <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
             <FavoriteIcon />
           </IconButton>
-          <IconButton aria-label="delete this plant" onClick={this.favoriteButton}>
+          <IconButton aria-label="delete this plant" onClick={this.deleteButton}>
             <DeleteOutlinedIcon className={classes.icon} />
           </IconButton>
-          <IconButton aria-label="toggle on and off" onClick={this.favoriteButton}>
+          <IconButton aria-label="toggle on and off" onClick={this.toggleButton}>
             {/* <Toggle style={iconStyles} color={red500} hoverColor={greenA200} /> */}
             <FavoriteIcon />
           </IconButton>
