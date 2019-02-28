@@ -82,7 +82,7 @@ const possibleFinalGardenArray = {
 // });
 
 // for (let i = 0; i < 10; i++) {
-//   connection.insertPlant('Apples', '1725 Delachaise St., Apt#108, New Orleans, LA', 70115, 1, (err, res) => {
+//   connection.insertPlant(1, 'Apples', '1725 Delachaise St., Apt#108, New Orleans, LA', 70115, "These Are Some Good Apples", (err, res) => {
 //     console.log(err, res);
 //   });
 // }

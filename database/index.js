@@ -129,11 +129,11 @@ module.exports.selectAllPlants = (callback) => {
 };
 
 // add a plant to the database and assign the plant to a specific user //
-module.exports.insertPlant = (plant, address, zipcode, iduser, callback) => {
+module.exports.insertPlant = (iduser, plant, address, zipcode, description, callback) => {
   // assign insertion properties
-  const q = [plant, address, zipcode];
+  const q = [plant, address, zipcode, description];
   // insert into databases
-  connection.query('INSERT INTO plants (plant, address, zipcode) VALUES (?, ?, ?)', q, (err) => {
+  connection.query('INSERT INTO plants (plant, address, zipcode, description) VALUES (?, ?, ?, ?)', q, (err) => {
     if (err) {
       callback(err, null);
     } else {

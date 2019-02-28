@@ -10,11 +10,13 @@ app.use(express.static(`${__dirname}/../client/dist`));
 app.use(bodyParser.json());
 
 app.get('/allplants', (req, res) => {
-  dbHelpers.selectAllPlants((err, plants) => { // change this function name to test other db helpers
+  // select all plants in database
+  dbHelpers.selectAllPlants((err, plants) => {
     if (err) {
       console.log(err);
       res.status(500).send('COULD NOT RETRIEVE PLANTS');
     } else {
+      // send back all plants
       res.status(200).send(plants);
     }
   });
@@ -25,14 +27,17 @@ app.get('/allplants', (req, res) => {
 
 
 app.get('/user/profile', (req, res) => {
+  // get user by username
   dbHelpers.selectUsersByUsername(req.query.username, (err, user) => {
     if (err) {
       res.status(500).send('UNABLE TO RETEIVE USER THROUGH USERNAME');
     } else {
+      // get user's plants
       dbHelpers.selectAllUsersPlants(user.id, (err2, plants) => {
         if (err2) {
           res.status(500).send('UNABLE TO RETRIEVE THE USERS PLANTS');
         } else {
+          // send back user's plants
           res.status(200).send(plants);
         }
       });
@@ -40,18 +45,21 @@ app.get('/user/profile', (req, res) => {
   });
 });
 
-app.post('/plant/profile', (req, res) => {
-  dbHelpers.getUserByGivenUsername(req.body.username, (err, user) => {
+app.post('/plant/user', (req, res) => {
+  // request body needs a username, planttype/currency, address, zipcode, and a description (not in this particular order)
+  // get user by username
+  dbHelpers.selectUsersByUsername(req.body.username, (err, user) => {
     if (err) {
-      console.log(err);
       res.status(500).send('COULD NOT RETRIEVE USER FROM DATABASE');
     } else {
-      dbHelpers.addPlant(user[0].id, req.body.currency, req.body.description, '38318 kanks place drive', user[0].zipcode, 'https://inhabitat.com/wp-content/blogs.dir/1/files/2013/05/tomatoes-vine.jpg', (err, plant) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send('COULD NOT CREATE PLANT PROFILE');
+      // add new plant to the database
+      // currency stands for the type of plant
+      dbHelpers.insertPlant(user.id, req.body.currency, req.body.address, parseInt(req.body.zipcode), req.body.description, (err2, data) => {
+        if (err2) {
+          res.status(500).send('Something went wrong while saving plant to the database');
         } else {
-          res.status(203).send('PLANT PROFILE CREATED');
+          // send back the newly created plant
+          res.status(204).send(data);
         }
       });
     }
