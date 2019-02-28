@@ -12,7 +12,7 @@ import ViewPlantProfile from './components/ViewPlantProfile.jsx';
 import CreatePlantProfile from './components/CreatePlantProfile.jsx';
 import MyProfile from './components/myProfile.jsx';
 import MapView from './components/MapView.jsx';
-import SampleData from "./components/SampleData";
+// import SampleData from "./components/SampleData";
 
 
 class App extends React.Component {

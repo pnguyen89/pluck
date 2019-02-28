@@ -13,11 +13,11 @@ const ipLookUp = () => {
     console.log(err);
   });
 };
-// ipLookUp();
+ipLookUp();
 
-const getUserLoc = () => {
-  ipLookUp();
-};
+// const getUserLoc = () => {
+//   ipLookUp();
+// };
 
 // const getAddress = (latitude, longitude) => {
 
@@ -49,4 +49,4 @@ const getUserLoc = () => {
 //   console.log('geolocation is not enabled on this browser');
 //   ipLookUp();
 // }
-module.exports.getUserLoc = getUserLoc;
+// module.exports.getUserLoc = getUserLoc;
