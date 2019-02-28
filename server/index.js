@@ -188,30 +188,36 @@ app.post('/newuser', (req, res) => {
 });
 
 app.put('/likes', (req, res) => {
+  // like or dislike a plant and update it's counter
   dbHelpers.updateUserLikedPlant(parseInt(req.body.iduser), parseInt(req.body.idplant), (err, data) => {
     if (err) {
       res.status(500).send('Something went wrong while trying to update user');
     } else {
+      // send the plant data if likeing the plant
       res.status(202).send(data);
     }
   });
 });
 
 app.delete('/plant', (req, res) => {
+  // delete a plant and all refrences to it in the database
   dbHelpers.deletePlant(req.body.idplant, (err, remainingPlants) => {
     if (err) {
       res.status(500).send('Error in deletion of plant from the database');
     } else {
+      // send back the remaining plants
       res.status(200).send(remainingPlants);
     }
   });
 });
 
 app.post('/comments', (req, res) => {
+  // add a specific user's comment to a specific plant
   dbHelpers.insertComment(parseInt(req.body.iduser), parseInt(req.body.idplant), req.body.comment, (err, comment) => {
     if (err) {
       res.status(500).send('Error in saving new comment to database');
     } else {
+      // send back the comment
       res.status(200).send(comment);
     }
   });
