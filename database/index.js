@@ -311,7 +311,23 @@ module.exports.selectAllZipcodePlants = (zipcode, callback) => {
     if (err) {
       callback(err, null);
     } else {
-      callback(null, plants);
+      // array for holding plants
+      const returnArray = [];
+      // get image for each plant
+      _.forEach(plants, (plant, index) => {
+        module.exports.selectPlantImage(plant.plant, (err2, imagelink) => {
+          if (err2) {
+            callback(err2, null);
+          } else {
+            plant.imagelink = imagelink;
+            returnArray.push(plant);
+            if (index === plants.length - 1) {
+              // send back the plants
+              callback(null, returnArray);
+            }
+          }
+        });
+      });
     }
   });
 };

@@ -120,23 +120,23 @@ app.put('/user/login', (req, res) => {
   });
 });
 
-app.get('/plant/category', (req, res) => {
-  dbHelpers.getImageByGivenCategory(req.query.category, (err, imageUrl) => {
-    console.log(req.query.category)
-    if (err) {
-      console.log(err);
-      res.status(500).send('COULD NOT RETRIEVE IMAGE');
-    } else {
-      res.status(200).send(imageUrl);
-      // console.log();
-    }
-  });
-});
+// app.get('/plant/category', (req, res) => {
+//   dbHelpers.getImageByGivenCategory(req.query.category, (err, imageUrl) => {
+//     console.log(req.query.category)
+//     if (err) {
+//       console.log(err);
+//       res.status(500).send('COULD NOT RETRIEVE IMAGE');
+//     } else {
+//       res.status(200).send(imageUrl);
+//       // console.log();
+//     }
+//   });
+// });
 
 // function to catch get req from client zipcode view
-app.get('/user/zipcode', (req, res) => {
+app.get('/zipcode', (req, res) => {
   console.log(req.query);
-  dbHelpers.getPlantsByGivenZipcode(req.query.zipcode, (err, plants) => {
+  dbHelpers.selectAllZipcodePlants(parseInt(req.body.zipcode), (err, plants) => {
     if (err) {
       console.log(err);
       res.status(500).send('COULD NOT RETRIEVE NEARBY PLANTS');
