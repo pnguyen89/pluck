@@ -55,3 +55,8 @@ CREATE TABLE usersLiked (
   idplant INTEGER NOT NULL,
   PRIMARY KEY (id)
 );
+
+-- CREATE TABLE comments (
+
+
+-- );
