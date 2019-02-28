@@ -136,11 +136,13 @@ app.put('/user/login', (req, res) => {
 // function to catch get req from client zipcode view
 app.get('/zipcode', (req, res) => {
   console.log(req.query);
+  // get all plants in the zipcode
   dbHelpers.selectAllZipcodePlants(parseInt(req.body.zipcode), (err, plants) => {
     if (err) {
       console.log(err);
       res.status(500).send('COULD NOT RETRIEVE NEARBY PLANTS');
     } else {
+      // send back the plants
       res.status(200).send(plants);
     }
   });
@@ -166,10 +168,12 @@ app.get('/zipcode', (req, res) => {
 // });
 
 app.post('/newuser', (req, res) => {
+  // insert a new user into the database
   dbHelpers.insertUser(req.body.username, req.body.password, req.body.address, parseInt(req.body.zipcode), (err, data) => {
     if (err) {
       res.status(500).send('Invalid Field');
     } else {
+      // send back the new user's data
       res.status(204).send(data);
     }
   });
