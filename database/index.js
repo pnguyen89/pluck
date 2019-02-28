@@ -35,16 +35,6 @@ module.exports.connection = connection;
 
 // This is a good test to see if we are successfully connected to our database
 
-module.exports.addFavorite = (userId, plantId, callback) => {
-  connection.query('INSERT INTO favorites(id_user, id_plant) VALUES(?, ?)', [userId, plantId], (err, favorite) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, favorite);
-    }
-  });
-};
-
 module.exports.insertUser = (username, password, address, zipcode, callback) => {
   module.exports.selectAllUsers((err, users) => {
     const allUsernames = _.map(users, (user) => {
@@ -73,7 +63,18 @@ module.exports.insertUser = (username, password, address, zipcode, callback) => 
 };
 
 module.exports.verifyUser = (username, password, callback) => {
-  
+  module.exports.selectUsersByUsername(username, (err, user) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      const comparisonPassword = crypto.pbkdf2Sync(password, user.salt, 1012, 50, 'sha512').toString('hex');
+      if (comparisonPassword === user.password) {
+        callback(null, true);
+      } else {
+        callback(Error('Invalid Username or Password, Please Try Again'), null);
+      }
+    }
+  });
 };
 
 module.exports.selectUsersByUsername = (username, callback) => {

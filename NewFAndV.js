@@ -73,6 +73,10 @@ const possibleFinalGardenArray = {
 //   console.log(err, res);
 // });
 
-connection.insertUser('acreed1998', 'tigerlamb345', '1725 Delachaise St., Apt#108, New Orleans, LA', 70115, (err, res) => {
-  console.log(err, res);
-})
+// connection.insertUser('acreed1998', 'tigerlamb345', '1725 Delachaise St., Apt#108, New Orleans, LA', 70115, (err, res) => {
+//   console.log(err, res);
+// });
+
+// connection.verifyUser('acreed1998', 'tigerlamb345', (err, res) => {
+//   console.log(err, res);
+// });
