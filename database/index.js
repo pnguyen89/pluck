@@ -58,7 +58,14 @@ module.exports.insertUser = (username, password, address, zipcode, callback) => 
               callback(err3, null);
             } else {
               // send back the new user
-              callback(null, newUsers[newUsers.length - 1]);
+              const newUser = newUsers[newUsers.length - 1];
+              const userData = {};
+              userData.id = newUser.id;
+              userData.username = newUser.username;
+              userData.address = newUser.address;
+              userData.zipcode = newUser.zipcode;
+              userData.loggedIn = newUser.loggedIn;
+              callback(null, userData);
             }
           });
         }

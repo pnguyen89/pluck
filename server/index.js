@@ -151,18 +151,28 @@ app.get('/zipcode', (req, res) => {
 });
 
 // function to catch post from client signup work
-app.post('/user/info', (req, res) => {
-  console.log(req.body);
-  const { username, password, zipcode } = req.body;
-  dbHelpers.addUser(username, password, 'a', zipcode, (err, user) => {
+// app.post('/user/info', (req, res) => {
+//   console.log(req.body);
+//   const { username, password, zipcode } = req.body;
+//   dbHelpers.addUser(username, password, 'a', zipcode, (err, user) => {
+//     if (err) {
+//       console.log(err);
+//       res.status(500).send('COULD NOT CREATE PROFILE');
+//     } else {
+//       res.status(203).send('PROFILE CREATED');
+//     }
+//   });
+//   // call helper function from db that saves user instance to db
+// });
+
+app.post('/newuser', (req, res) => {
+  dbHelpers.insertUser(req.body.username, req.body.password, req.body.address, parseInt(req.body.zipcode), (err, data) => {
     if (err) {
-      console.log(err);
-      res.status(500).send('COULD NOT CREATE PROFILE');
+      res.status(500).send('Invalid Field');
     } else {
-      res.status(203).send('PROFILE CREATED');
+      res.status(204).send(data);
     }
   });
-  // call helper function from db that saves user instance to db
 });
 
 // function to catch get from client plant list view
