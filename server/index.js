@@ -8,6 +8,7 @@ const app = express();
 
 app.use(express.static(`${__dirname}/../client/dist`));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/allplants', (req, res) => {
   // select all plants in database
@@ -67,17 +68,17 @@ app.post('/plant/user', (req, res) => {
   // req.query, req.body, req.params i dont know what to use. query works for now though // userId, address, zipcode
 });
 
-app.get('/health', (req, res) => {
-  dbHelpers.getAllPlants((err, plants) => { // change function name to test each db helpers
-    if (err) {
-      console.log(err);
-      res.send('weiner');
-    } else {
-      console.log(plants);
-      res.send('notQuiteWeiner');
-    }
-  });
-});
+// app.get('/health', (req, res) => {
+//   dbHelpers.getAllPlants((err, plants) => { // change function name to test each db helpers
+//     if (err) {
+//       console.log(err);
+//       res.send('weiner');
+//     } else {
+//       console.log(plants);
+//       res.send('notQuiteWeiner');
+//     }
+//   });
+// });
 
 // function to catch get req from client login
 app.get('/user/login', (req, res) => {
@@ -105,6 +106,16 @@ app.get('/user/login', (req, res) => {
   // .then() grab data returned from helper function
   //    res.send(data) back to the client with status
   // catch errors
+});
+
+app.put('/user/login', (req, res) => {
+  dbHelpers.verifyUser(req.body.username, req.body.password, (err, user) => {
+    if (err) {
+      res.status(500).send('Invalid Username or Password');
+    } else {
+      res.status(202).send(user);
+    }
+  });
 });
 
 app.get('/plant/category', (req, res) => {

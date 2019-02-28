@@ -80,8 +80,7 @@ module.exports.verifyUser = (username, password, callback) => {
       const comparisonPassword = crypto.pbkdf2Sync(password, user.salt, 1012, 50, 'sha512').toString('hex');
       // compare passwords
       if (comparisonPassword === user.password) {
-        // send back true if passwords are same
-        callback(null, true);
+        callback(null, { id: user.id });
       } else {
         // send error if no match
         callback(Error('Invalid Username or Password, Please Try Again'), null);
