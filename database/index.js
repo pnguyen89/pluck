@@ -72,6 +72,22 @@ module.exports.insertUser = (username, password, address, zipcode, callback) => 
   });
 };
 
+module.exports.verifyUser = (username, password, callback) => {
+  
+};
+
+module.exports.selectUsersByUsername = (username, callback) => {
+  module.exports.selectAllUsers((err, users) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, _.filter(users, (user) => {
+        return user.username === username;
+      })[0]);
+    }
+  });
+};
+
 module.exports.selectAllUsers = (callback) => {
   // get all users from db
   connection.query('SELECT * FROM users', (err, users) => {
@@ -80,16 +96,6 @@ module.exports.selectAllUsers = (callback) => {
     } else {
       // send back all users
       callback(null, users);
-    }
-  });
-};
-
-module.exports.getSaltByGivenUsername = (username, callback) => {
-  connection.query('SELECT salt FROM users WHERE username = ?', [username], (err, salt) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, salt);
     }
   });
 };
