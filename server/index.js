@@ -115,7 +115,15 @@ app.put('/user/login', (req, res) => {
       res.status(500).send('Invalid Username or Password');
     } else {
       // send back the user's data
-      res.status(202).send(user);
+      dbHelpers.selectAllUsersPlants(user.id, (err, plants) => {
+        if (plants) {
+          user.plants = plants;
+          res.status(202).send(user);
+        } else {
+          console.log('could not retrieve user plants');
+        }
+      });
+      // res.status(202).send(user);
     }
   });
 });
