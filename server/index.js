@@ -189,6 +189,16 @@ app.put('/likes', (req, res) => {
   });
 });
 
+app.delete('/plant', (req, res) => {
+  dbHelpers.deletePlant(req.body.idplant, (err, remainingPlants) => {
+    if (err) {
+      res.status(500).send('Error in deletion of plant from the database');
+    } else {
+      res.status(200).send(remainingPlants);
+    }
+  });
+});
+
 // function to catch get from client plant list view
 //   get req to api for directions to plant
 //   should send location/address of plant
