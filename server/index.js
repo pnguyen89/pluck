@@ -81,38 +81,40 @@ app.post('/plant/user', (req, res) => {
 // });
 
 // function to catch get req from client login
-app.get('/user/login', (req, res) => {
-  console.log(req.query);
-  dbHelpers.getUserByGivenUsername(req.query.username, (err, user) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send('INCORRECT USERNAME/PASSWORD/MAYBE ITS OUR SERVER/DB FAULT');
-    } else if (user[0].salt + req.query.password === user[0].hpass) {
-    // } else if (user.username === req.query.username) { // testing
-      dbHelpers.getPlantsByGivenUserId(user[0].id, (err, plants) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send('COULD NOT RETRIEVE USER PLANTS');
-        } else {
-          res.status(200).send({ id: user[0].id, username: user[0].username, zipcode: user[0].zipcode, plants });
-        }
-      }); // return whole user obj and not just username
-    } else {
-      res.status(400).send('INCORRECT USERNAME/PASSWORD');
-    }
-  });
-  // figure out what to pass down to helper function
-  // call helper function from database
-  // .then() grab data returned from helper function
-  //    res.send(data) back to the client with status
-  // catch errors
-});
+// app.get('/user/login', (req, res) => {
+//   console.log(req.query);
+//   dbHelpers.getUserByGivenUsername(req.query.username, (err, user) => {
+//     if (err) {
+//       console.log(err);
+//       res.status(500).send('INCORRECT USERNAME/PASSWORD/MAYBE ITS OUR SERVER/DB FAULT');
+//     } else if (user[0].salt + req.query.password === user[0].hpass) {
+//     // } else if (user.username === req.query.username) { // testing
+//       dbHelpers.getPlantsByGivenUserId(user[0].id, (err, plants) => {
+//         if (err) {
+//           console.log(err);
+//           res.status(500).send('COULD NOT RETRIEVE USER PLANTS');
+//         } else {
+//           res.status(200).send({ id: user[0].id, username: user[0].username, zipcode: user[0].zipcode, plants });
+//         }
+//       }); // return whole user obj and not just username
+//     } else {
+//       res.status(400).send('INCORRECT USERNAME/PASSWORD');
+//     }
+//   });
+//   // figure out what to pass down to helper function
+//   // call helper function from database
+//   // .then() grab data returned from helper function
+//   //    res.send(data) back to the client with status
+//   // catch errors
+// });
 
 app.put('/user/login', (req, res) => {
+  // see if username and password are valid
   dbHelpers.verifyUser(req.body.username, req.body.password, (err, user) => {
     if (err) {
       res.status(500).send('Invalid Username or Password');
     } else {
+      // send back the user's data
       res.status(202).send(user);
     }
   });

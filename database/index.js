@@ -80,11 +80,50 @@ module.exports.verifyUser = (username, password, callback) => {
       const comparisonPassword = crypto.pbkdf2Sync(password, user.salt, 1012, 50, 'sha512').toString('hex');
       // compare passwords
       if (comparisonPassword === user.password) {
-        callback(null, { id: user.id });
+        // send back user id if passwords match
+        module.exports.updateUserLoggedIn(user.id, true, (err2, updatedUser) => {
+          if (err2) {
+            callback(err2, null);
+          } else {
+            callback(null, updatedUser);
+          }
+        });
       } else {
         // send error if no match
         callback(Error('Invalid Username or Password, Please Try Again'), null);
       }
+    }
+  });
+};
+
+module.exports.updateUserLoggedIn = (iduser, trueOrFalse, callback) => {
+  // need an integer instead of a boolean
+  let valid;
+  if (trueOrFalse === true) {
+    valid = 1;
+  } else {
+    valid = 0;
+  }
+  // update the loggedin field for the user
+  connection.query(`UPDATE users SET loggedIn = ${valid} WHERE id = ${iduser}`, (err) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      // get the updated user
+      connection.query(`SELECT * FROM users WHERE id = ${iduser}`, (err2, users) => {
+        if (err2) {
+          callback(err2, null);
+        } else {
+          // send back the user
+          const userData = {};
+          userData.id = users[0].id;
+          userData.username = users[0].username;
+          userData.address = users[0].address;
+          userData.zipcode = users[0].zipcode;
+          userData.loggedIn = users[0].loggedIn;
+          callback(null, userData);
+        }
+      });
     }
   });
 };
