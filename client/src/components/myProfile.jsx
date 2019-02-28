@@ -1,23 +1,30 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Chip from '@material-ui/core/Chip';
+import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import SampleData from './SampleData.js';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
+import NoSsr from '@material-ui/core/NoSsr';
+import Paper from '@material-ui/core/Paper'
 import { Redirect } from 'react-router-dom';
+// import Select from 'react-select';
+import SampleData from './SampleData.js';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
   root: {
@@ -120,22 +127,35 @@ class MyProfile extends React.Component {
             <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                To subscribe to this website, please enter your email address here. We will send
-                updates occasionally.
+                Add a new plant for fellow Pluckers to Pluck! 
             </DialogContentText>
               <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Email Address"
-                type="email"
-                fullWidth
+                id="outlined-with-placeholder"
+                label="Pluck Me!"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                id="outlined-with-placeholder"
+                label="Address"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                id="outlined-with-placeholder"
+                label="Zip Code"
+                placeholder="Placeholder"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
                 Cancel
-            </Button>
+              </Button>
               <Button onClick={this.handleClose} color="primary">
                 Subscribe
             </Button>

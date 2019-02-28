@@ -7,16 +7,39 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { NavLink } from 'react-router-dom'; 
 import axios from 'axios';
+// import { blue500, red500, greenA200 } from 'material-ui/styles/colors';
+// import SvgIcon from 'material-ui/SvgIcon';
+
+// const iconStyles = {
+//   marginRight: 24,
+// };
+
+// const Toggle = props => (
+//   <SvgIcon {...props}>
+//     <path d="M17 7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
+//   </SvgIcon>
+// );
 
 const x = document.getElementById('demo');
 
 const styles = theme => ({
+  root: {
+    color: theme.palette.text.primary,
+  },
+  icon: {
+    margin: theme.spacing.unit,
+    fontSize: 32,
+    padding: '0%',
+  },
   card: {
     maxWidth: 400,
   },
@@ -72,15 +95,15 @@ class ViewPlantProfile extends React.Component {
 
   // THIS IS CLOSE TO WORKING BUT NOT QUITE FUNCTIONAL
   favoriteButton() {
-    const { userId } = this.state;
-    const plantId = this.props.plant.plantId;
-
+    // const { userId } = this.state;
+    // const plantId = this.props.plant.plantId;
+    console.log('CLICKED');
     // post request to server
     //  add plant to users favs
     //  send user id + plant id
-    axios.post('/user/favorite', { userId, plantId })
-      .then((res) => { console.log(res); })
-      .catch((err) => { console.log(err); });
+    // axios.post('/user/favorite', { userId, plantId })
+    //   .then((res) => { console.log(res); })
+    //   .catch((err) => { console.log(err); });
   }
 
   showPosition(position) {
@@ -113,11 +136,22 @@ class ViewPlantProfile extends React.Component {
           <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
             <FavoriteIcon />
           </IconButton>
+          <IconButton aria-label="delete this plant" onClick={this.favoriteButton}>
+            <DeleteOutlinedIcon className={classes.icon} />
+          </IconButton>
+          <IconButton aria-label="toggle on and off" onClick={this.favoriteButton}>
+            {/* <Toggle style={iconStyles} color={red500} hoverColor={greenA200} /> */}
+            <FavoriteIcon />
+          </IconButton>
           <NavLink to="/plantLocation" style={{ textDecoration: 'none' }}>
             <Button variant="contained" onClick={this.getLocation} className={classes.button}>
                 Get Directions
             </Button>
           </NavLink>
+          
+          {/* <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
+            
+          </IconButton> */}
         </CardActions>
       </Card>
     );
