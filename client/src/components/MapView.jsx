@@ -46,10 +46,10 @@ class MapView extends React.Component {
 }
 
   getAddress() {
-    axios.get('/health')
+    axios.get('/allplants')
       .then((res) => {
         console.log(res);
-        const plant = res.data;
+        const plant = res.data[0];
         this.setState({ address: plant.address });
       });
   }
