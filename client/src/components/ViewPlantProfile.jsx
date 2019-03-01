@@ -7,13 +7,23 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import {
+  Dialog, DialogActions, DialogContent, DialogContentText,
+  DialogTitle, FormGroup, FormControlLabel, Snackbar,
+  SnackbarContent, TextField
+} from '@material-ui/core';
 // import { blue500, red500, greenA200 } from 'material-ui/styles/colors';
 // import SvgIcon from 'material-ui/SvgIcon';
 
@@ -65,6 +75,7 @@ class ViewPlantProfile extends React.Component {
     super(props);
     this.state = {
       userId: props.userId,
+      liked: false,
     };
     this.favoriteButton = this.favoriteButton.bind(this);
     this.getDirections = this.getDirections.bind(this);
@@ -138,6 +149,7 @@ class ViewPlantProfile extends React.Component {
         />
         <CardContent>
           <Typography component="p">
+            {plant.address}, {plant.zipcode} <br />
             {plant.description}
           </Typography>
         </CardContent>
@@ -145,6 +157,17 @@ class ViewPlantProfile extends React.Component {
           <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
             <FavoriteIcon />
           </IconButton>
+          <FormControlLabel
+            control={(
+              <Checkbox
+                icon={<FavoriteBorder />}
+                checkedIcon={<Favorite />}
+                value="checkedH"
+                onClick={this.favoriteButton}
+              />
+            )}
+            label="Like"
+          />
           <NavLink to="/plantLocation" style={{ textDecoration: 'none' }}>
             <Button variant="contained" onClick={this.getLocation} className={classes.button}>
                 Get Directions

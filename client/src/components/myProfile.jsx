@@ -45,6 +45,7 @@ import SampleData from './SampleData.js';
 // import Typography from '@material-ui/core/Typography';
 // import { withStyles } from '@material-ui/core/styles';
 // import Typography from '@material-ui/core/Typography';
+import CheckboxLabels from './CheckboxLabels.jsx';
 
 const styles = {
   root: {
@@ -134,6 +135,7 @@ class MyProfile extends React.Component {
       currency: 'Select',
       userId: this.props.id,
       checkedB: true, // for the toggle
+      liked: true, // like button
     };
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -182,6 +184,11 @@ class MyProfile extends React.Component {
     this.setState({ open: false });
   }
 
+  // handleChange(name) {
+  //   return (event) => {
+  //     this.setState({ [name]: event.target.checked });
+  //   };
+  // }
   // // for toggle plant
   // // changed from double arrow, may not work!!
   // handleChange(name) {
@@ -227,7 +234,7 @@ class MyProfile extends React.Component {
 
 // render username, zip, and user plants dynamically
   render() {
-    const { classes } = this.props;
+    const { classes, handleChange } = this.props;
     return (
       <div className={classes.root}>
         <Typography
@@ -267,6 +274,7 @@ class MyProfile extends React.Component {
                 />
                 <CardContent>
                   <Typography component="p">
+                    {plant.address}, {plant.zipcode} <br />
                     {plant.description}
                   </Typography>
                 </CardContent>
@@ -287,7 +295,7 @@ class MyProfile extends React.Component {
                         this.handleLike(plant.id);
                       }}
                     />
-)}
+                  )}
                   label="Like"
                 />
                 <FormControlLabel
@@ -300,8 +308,22 @@ class MyProfile extends React.Component {
                         this.handleToggle(plant.id);
                       }}
                     />
-)}
+                  )}
                   label="Ready for Plucking"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.state[`{plant.id}`]}
+                      onChange={handleChange(plant.title)}
+                      value="liked"
+                      classes={{
+                        root: classes.root,
+                        checked: classes.checked,
+                      }}
+                    />
+                  }
+                  label="Custom color"
                 />
               </Card>
             );
