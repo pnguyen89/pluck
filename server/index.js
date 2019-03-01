@@ -244,7 +244,13 @@ app.post('/comments', (req, res) => {
 });
 
 app.get('/plant/comments', (req, res) => {
-
+  dbHelpers.selectAllPlantsComments(req.query.idplant, (err, comments) => {
+    if (err) {
+      res.status(500).send("Cannot get plant's comments");
+    } else {
+      res.status(200).send(comments);
+    }
+  });
 });
 // function to catch get from client plant list view
 //   get req to api for directions to plant

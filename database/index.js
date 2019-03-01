@@ -609,7 +609,6 @@ module.exports.selectAllPlantsComments = (idplant, callback) => {
           }
         });
       });
-      callback(null, comments);
     }
   });
 };
