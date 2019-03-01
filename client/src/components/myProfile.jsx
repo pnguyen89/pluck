@@ -74,7 +74,7 @@ class MyProfile extends React.Component {
       url: '/plant',
       data: {
         username: userId,
-        plantid: plantId,
+        idplant: plantId,
       },
     })
       .then(() => console.log('plant removed'))
@@ -144,7 +144,7 @@ class MyProfile extends React.Component {
                     {plant.description}
                   </Typography>
                 </CardContent>
-                <IconButton aria-label="delete this plant" onClick={this.deleteButton(plant.id)}>
+                <IconButton aria-label="delete this plant" onClick={() => {this.deleteButton(plant.id)}}>
                   <DeleteOutlinedIcon className={classes.icon} />
                 </IconButton>
                 <IconButton aria-label="toggle on and off" onClick={this.toggleButton}>
