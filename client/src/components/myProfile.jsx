@@ -10,26 +10,37 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import NoSsr from '@material-ui/core/NoSsr';
-import Paper from '@material-ui/core/Paper'
+import green from '@material-ui/core/colors/green';
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import NoSsr from '@material-ui/core/NoSsr';
+// import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router-dom';
+import {
+  Checkbox, CheckBoxOutlineBlankIcon, CheckBoxIcon, 
+  Dialog, DialogActions, DialogContent, DialogContentText,
+  DialogTitle, FormGroup, FormControlLabel, IconButton, Snackbar,
+  SnackbarContent, TextField, withStyles, Typography, Switch } from '@material-ui/core';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 // import Select from 'react-select';
 import SampleData from './SampleData.js';
-import TextField from '@material-ui/core/TextField';
+// import Snackbar from '@material-ui/core/Snackbar';
+// import SnackbarContent from '@material-ui/core/SnackbarContent';
+// import TextField from '@material-ui/core/TextField';
 // import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+// import { withStyles } from '@material-ui/core/styles';
+// import Typography from '@material-ui/core/Typography';
 
 const styles = {
   root: {
@@ -41,7 +52,69 @@ const styles = {
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
+  // starting here down, this is for the toggle
+  // colorBar: {},
+  // colorChecked: {},
+  // iOSSwitchBase: {
+  //   '&$iOSChecked': {
+  //     color: theme.palette.common.white,
+  //     '& + $iOSBar': {
+  //       backgroundColor: '#52d869',
+  //     },
+  //   },
+  //   transition: theme.transitions.create('transform', {
+  //     duration: theme.transitions.duration.shortest,
+  //     easing: theme.transitions.easing.sharp,
+  //   }),
+  // },
+  // iOSChecked: {
+  //   transform: 'translateX(15px)',
+  //   '& + $iOSBar': {
+  //     opacity: 1,
+  //     border: 'none',
+  //   },
+  // },
+  // iOSBar: {
+  //   borderRadius: 13,
+  //   width: 42,
+  //   height: 26,
+  //   marginTop: -13,
+  //   marginLeft: -21,
+  //   border: 'solid 1px',
+  //   borderColor: theme.palette.grey[400],
+  //   backgroundColor: theme.palette.grey[50],
+  //   opacity: 1,
+  //   transition: theme.transitions.create(['background-color', 'border']),
+  // },
+  // iOSIcon: {
+  //   width: 24,
+  //   height: 24,
+  // },
+  // iOSIconChecked: {
+  //   boxShadow: theme.shadows[1],
+  // },
 };
+// variantIcon and styles1 for snackbar
+const variantIcon = {
+  success: CheckCircleIcon,
+};
+
+const styles1 = theme => ({
+  success: {
+    backgroundColor: green[600],
+  },
+  icon: {
+    fontSize: 20,
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing.unit,
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+});
 
 class MyProfile extends React.Component {
   constructor(props) {
@@ -56,6 +129,7 @@ class MyProfile extends React.Component {
       loggedIn: false,
       currency: 'Select',
       userId: this.props.id,
+      checkedB: true, // for the toggle
     };
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -77,7 +151,9 @@ class MyProfile extends React.Component {
         idplant: plantId,
       },
     })
-      .then(() => console.log('plant removed'))
+      .then(() => {
+        console.log('plant removed');
+      })
       .catch((err) => { console.log('could not delete plant', err); });
   }
 
@@ -90,6 +166,7 @@ class MyProfile extends React.Component {
     //   .then(() => console.log('plant toggled'))
     //   .catcch((err) => { console.log(`${err} in toggling plant`); });
   }
+
   // for the form that adds a plant demo version
   handleClickOpen() {
     this.setState({ open: true });
@@ -99,7 +176,13 @@ class MyProfile extends React.Component {
     this.setState({ open: false });
   }
 
-// render username, zip, and user plants dynamically
+  // for toggle plant
+  // changed from double arrow, may not work!!
+  handleChange(name) {
+    return event => this.setState({ [name]: event.target.checked });
+  }
+
+  // render username, zip, and user plants dynamically
   render() {
     const { classes } = this.props;
     return (
@@ -151,6 +234,30 @@ class MyProfile extends React.Component {
                   {/* <Toggle style={iconStyles} color={red500} hoverColor={greenA200} /> */}
                   <FavoriteIcon />
                 </IconButton>
+                <FormControlLabel
+                  control={
+                    <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} value="checkedH" />
+                  }
+                  label="Like"
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      classes={{
+                        switchBase: classes.iOSSwitchBase,
+                        bar: classes.iOSBar,
+                        icon: classes.iOSIcon,
+                        iconChecked: classes.iOSIconChecked,
+                        checked: classes.iOSChecked,
+                      }}
+                      disableRipple
+                      checked={this.state.checkedB}
+                      onChange={this.handleChange('checkedB')}
+                      value="checkedB"
+                    />
+                  }
+                  label="iOS style"
+                />
               </Card>
             );
           })
@@ -168,7 +275,7 @@ class MyProfile extends React.Component {
             <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Add a new plant for fellow Pluckers to Pluck! 
+                Add a new plant for fellow Pluckers to Pluck!
             </DialogContentText>
               <TextField
                 id="outlined-with-placeholder"
