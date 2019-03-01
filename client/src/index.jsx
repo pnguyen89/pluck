@@ -75,7 +75,7 @@ class App extends React.Component {
       zipcode,
     } = userInfo;
     // send post req to server to add new user to db
-    axios.post('/user/info', {
+    axios.post('/newuser', {
       username,
       password,
       address,
@@ -96,7 +96,15 @@ class App extends React.Component {
       username: userInfo.username,
     });
     // get req to server to grab all user info
-    axios.get(`/user/login?username=${userInfo.username}&password=${userInfo.password}`)
+    // axios.get(`/user/login?username=${userInfo.username}&password=${userInfo.password}`)
+    axios({
+      method: 'put',
+      url: '/user/login',
+      data: {
+        username: userInfo.username,
+        password: userInfo.password,
+      },
+    })
       .then((res) => {
         // set states with all user info
         this.setState({

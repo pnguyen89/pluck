@@ -45,7 +45,7 @@ export default class MapView extends Component {
       >
         <p>TEST</p>
       </Popup>
-    )
+    );
   }
 
   render() {
