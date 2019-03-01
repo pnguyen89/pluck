@@ -191,11 +191,11 @@ class PlantProfile extends React.Component {
       method: 'post',
       url: '/plant/user',
       data: {
-        username: 'acreed1998' || this.state.username,
-        currency: 'Apples' || this.state.currency,
+        username: this.state.username,
+        currency: this.state.currency,
         address: 'Pretend This String Is An Address' || this.state.address,
         zipcode: '70115' || this.state.zipcode,
-        description: 'This is a description' || this.state.description,
+        description: this.state.description,
       },
     })
       .then((res) => { console.log(res); })
