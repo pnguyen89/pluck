@@ -99,21 +99,21 @@ class ViewPlantProfile extends React.Component {
   // Longitude: ${position.coords.longitude}`;
 
   render() {
-    const { classes } = this.props;
+    const { classes, plant } = this.props;
 
     return (
       <Card className={classes.card}>
         <CardHeader
-          title={this.props.plant.title}
+          title={plant.plant}
         />
         <CardMedia
           className={classes.media}
-          image={this.props.plant.image_url}
-          title={this.props.plant.title}
+          image={plant.imagelink}
+          title={plant.plant}
         />
         <CardContent>
           <Typography component="p">
-            {this.props.plant.description}
+            {plant.description}
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
