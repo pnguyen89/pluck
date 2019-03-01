@@ -23,6 +23,16 @@ app.get('/allplants', (req, res) => {
   });
 });
 
+app.get('/toggledonplants', (req, res) => {
+  dbHelpers.selectAllToggledOnPlants((err, plants) => {
+    if (err) {
+      res.status(500).send('Problem occured while reteiving plants');
+    } else {
+      res.status(200).send(plants);
+    }
+  });
+});
+
 // SERVER ROUTES
 // They seem to be working as intended through postman requests. The post routes may need to change from req.body to req.query. Im not sure
 
@@ -224,6 +234,7 @@ app.post('/comments', (req, res) => {
 });
 
 app.get('/plant/comments', (req, res) => {
+
 });
 // function to catch get from client plant list view
 //   get req to api for directions to plant

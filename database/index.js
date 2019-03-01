@@ -149,8 +149,14 @@ module.exports.selectUsersByUsername = (username, callback) => {
   });
 };
 
-module.exports.selectUserById = (iduser) => {
-  connection.query(`SELECT * FROM users WHERE id = ${iduser}`);
+module.exports.selectUserById = (iduser, callback) => {
+  connection.query(`SELECT * FROM users WHERE id = ${iduser}`, (err, singleUserArray) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, singleUserArray[0]);
+    }
+  });
 };
 
 module.exports.selectAllUsers = (callback) => {
@@ -604,6 +610,20 @@ module.exports.selectAllPlantsComments = (idplant, callback) => {
       callback(err, null);
     } else {
       // send back comments
+      const commentHolder = [];
+      _.forEach(comments, (comment, index) => {
+        module.exports.selectUserById(comment.iduser, (err2, user) => {
+          if (err2) {
+            callback(err2, null);
+          } else {
+            comment.username = user.username;
+            commentHolder.push(comment);
+            if (index === comments.length - 1) {
+              callback(null, commentHolder);
+            }
+          }
+        });
+      });
       callback(null, comments);
     }
   });
@@ -644,6 +664,29 @@ module.exports.deletePlant = (idplant, callback) => {
             }
           });
         }
+      });
+    }
+  });
+};
+
+module.exports.selectAllToggledOnPlants = (callback) => {
+  connection.query('SELECT * FROM plants WHERE toggled = 0', (err, plants) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      const plantHolder = [];
+      _.forEach(plants, (plant, index) => {
+        module.exports.selectPlantImage(plant.plant, (err2, imagelink) => {
+          if (err2) {
+            callback(err2, null);
+          } else {
+            plant.imagelink = imagelink;
+            plantHolder.push(plant);
+            if (index === plants.length - 1) {
+              callback(null, plantHolder);
+            }
+          }
+        });
       });
     }
   });
