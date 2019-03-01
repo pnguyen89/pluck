@@ -691,3 +691,41 @@ module.exports.selectAllToggledOnPlants = (callback) => {
     }
   });
 };
+
+module.exports.updatePlantToggled = (idplant, callback) => {
+  module.exports.selectPlantById(idplant, (err, plant) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      let newVal;
+      if (plant.toggled === 0) {
+        newVal = 1;
+      } else {
+        newVal = 0;
+      }
+      connection.query(`UPDATE plants SET toggled = ${newVal} WHERE id = ${idplant}`, (err2) => {
+        if (err2) {
+          callback(err2, null);
+        } else {
+          module.exports.selectPlantById(idplant, (err3, updatedPlant) => {
+            if (err3) {
+              callback(err3, null);
+            } else {
+              callback(null, updatedPlant);
+            }
+          });
+        }
+      });
+    }
+  });
+};
+
+module.exports.selectPlantById = (idplant, callback) => {
+  connection.query(`SELECT * FROM plants WHERE id = ${idplant}`, (err, singlePlantArray) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, singlePlantArray[0]);
+    }
+  });
+};

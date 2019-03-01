@@ -33,6 +33,16 @@ app.get('/toggledonplants', (req, res) => {
   });
 });
 
+app.put('/toggle', (req, res) => {
+  dbHelpers.updatePlantToggled(req.body.idplant, (err, plant) => {
+    if (err) {
+      res.status(500).send("Couldn't update plant toggeld status");
+    } else {
+      res.status(202).send(plant);
+    }
+  });
+});
+
 // SERVER ROUTES
 // They seem to be working as intended through postman requests. The post routes may need to change from req.body to req.query. Im not sure
 
