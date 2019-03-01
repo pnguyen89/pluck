@@ -43,6 +43,16 @@ app.put('/toggle', (req, res) => {
   });
 });
 
+app.get('/plantnames', (req, res) => {
+  dbHelpers.selectAllPlantNames((err, plantnames) => {
+    if (err) {
+      res.status(500).send('Error in retrieving plant names from the database');
+    } else {
+      res.status(200).send(plantnames);
+    }
+  });
+});
+
 // SERVER ROUTES
 // They seem to be working as intended through postman requests. The post routes may need to change from req.body to req.query. Im not sure
 

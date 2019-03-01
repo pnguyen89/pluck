@@ -713,3 +713,15 @@ module.exports.selectPlantById = (idplant, callback) => {
     }
   });
 };
+
+module.exports.selectAllPlantNames = (callback) => {
+  module.exports.selectAllPlantData((err, plants) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, _.map(plants, (plant) => {
+        return plant.planttype;
+      }).sort());
+    }
+  });
+};

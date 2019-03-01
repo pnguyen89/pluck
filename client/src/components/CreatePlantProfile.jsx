@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -29,7 +30,7 @@ const styles = theme => ({
 });
 
 // for drop down
-const currencies = [
+let currencies = [
   {
     value: 'Strawberries',
     label: 'Strawberries',
@@ -71,6 +72,19 @@ const currencies = [
     label: 'Peaches',
   },
 ];
+
+axios.get('/plantnames').then((result) => {
+  const plantArray = [];
+  _.forEach(result.data, (plantname) => {
+    const obj = {};
+    obj.value = plantname;
+    obj.label = plantname;
+    plantArray.push(obj);
+  });
+  currencies = plantArray;
+}).catch((err) => {
+  console.log(err);
+});
 
 class PlantProfile extends React.Component {
   constructor(props) {
