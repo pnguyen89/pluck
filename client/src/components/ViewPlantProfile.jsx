@@ -64,7 +64,6 @@ class ViewPlantProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      plantId: '',
       userId: props.userId,
     };
     this.favoriteButton = this.favoriteButton.bind(this);
@@ -96,6 +95,9 @@ class ViewPlantProfile extends React.Component {
     console.log('favorite button clicked');
     // const { userId } = this.state;
     // const { plantId } = this.props;
+    const { userId } = this.state;
+    const plantId = this.props.plant.id;
+    console.log(this);
     // post request to server
     //  add plant to users favs
     //  send user id + plant id
@@ -105,7 +107,7 @@ class ViewPlantProfile extends React.Component {
       url: '/likes',
       data: {
         iduser: '1' || this.state.userId,
-        idplant: '1' || this.state.idplant,
+        idplant: plantId || '1',
       },
     })
       .then((res) => { console.log(res); })
@@ -122,21 +124,21 @@ class ViewPlantProfile extends React.Component {
   // Longitude: ${position.coords.longitude}`;
 
   render() {
-    const { classes } = this.props;
+    const { classes, plant } = this.props;
 
     return (
       <Card className={classes.card}>
         <CardHeader
-          title={this.props.plant.title}
+          title={plant.plant}
         />
         <CardMedia
           className={classes.media}
-          image={this.props.plant.imagelink}
-          title={this.props.plant.title}
+          image={plant.imagelink}
+          title={plant.plant}
         />
         <CardContent>
           <Typography component="p">
-            {this.props.plant.description}
+            {plant.description}
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
