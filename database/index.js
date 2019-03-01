@@ -149,6 +149,10 @@ module.exports.selectUsersByUsername = (username, callback) => {
   });
 };
 
+module.exports.selectUserById = (iduser) => {
+  connection.query(`SELECT * FROM users WHERE id = ${iduser}`);
+};
+
 module.exports.selectAllUsers = (callback) => {
   // get all users from db
   connection.query('SELECT * FROM users', (err, users) => {

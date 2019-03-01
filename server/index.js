@@ -223,6 +223,8 @@ app.post('/comments', (req, res) => {
   });
 });
 
+app.get('/plant/comments', (req, res) => {
+});
 // function to catch get from client plant list view
 //   get req to api for directions to plant
 //   should send location/address of plant
