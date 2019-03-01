@@ -1,16 +1,19 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Chip from '@material-ui/core/Chip';
 import classNames from 'classnames';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+// import Card from '@material-ui/core/Card';
+// import CardHeader from '@material-ui/core/CardHeader';
+// import CardMedia from '@material-ui/core/CardMedia';
+// import CardContent from '@material-ui/core/CardContent';
+// import CardActions from '@material-ui/core/CardActions';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 // import Dialog from '@material-ui/core/Dialog';
@@ -27,7 +30,8 @@ import green from '@material-ui/core/colors/green';
 // import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router-dom';
 import {
-  Checkbox, CheckBoxOutlineBlankIcon, CheckBoxIcon, 
+  Button,
+  Card, CardHeader, CardMedia, CardContent, CardActions,
   Dialog, DialogActions, DialogContent, DialogContentText,
   DialogTitle, FormGroup, FormControlLabel, IconButton, Snackbar,
   SnackbarContent, TextField, withStyles, Typography, Switch } from '@material-ui/core';
@@ -135,6 +139,7 @@ class MyProfile extends React.Component {
     this.handleClose = this.handleClose.bind(this);
     this.deleteButton = this.deleteButton.bind(this);
     this.toggleButton = this.toggleButton.bind(this);
+    this.handleLike = this.handleLike.bind(this); // like button
   }
 
   // remove plant from your plants completely
@@ -182,6 +187,12 @@ class MyProfile extends React.Component {
     return event => this.setState({ [name]: event.target.checked });
   }
 
+  // like button
+  handleLike(plantId, bool) {
+    console.log('like button toggled');
+    console.log(plantId, bool);
+  }
+
   // render username, zip, and user plants dynamically
   render() {
     const { classes } = this.props;
@@ -195,12 +206,12 @@ class MyProfile extends React.Component {
           {this.state.username.toUpperCase()}
         </Typography>
 
-        <Typography
+        {/* <Typography
           variant="subtitle1"
           gutterBottom
         >
           {this.state.zipcode}
-        </Typography>
+        </Typography> */}
 
         <div className={classes.root}>
 
@@ -236,9 +247,21 @@ class MyProfile extends React.Component {
                 </IconButton>
                 <FormControlLabel
                   control={
-                    <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} value="checkedH" />
+                    <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} value="checkedH" onClick={() => {
+                      this.handleLike(plant.id, false)
+                    }} />
                   }
                   label="Like"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                      checkedIcon={<CheckBoxIcon fontSize="small" />}
+                      value="checkedI"
+                    />
+                  }
+                  label="Custom size"
                 />
                 <FormControlLabel
                   control={
