@@ -65,6 +65,7 @@
     "react-map-gl": "^4.0.13",
     "react-mapbox-gl": "^4.2.0",
     "react-router-dom": "^4.3.1",
+    "react-typeahead": "^2.0.0-alpha.8",
     "sequelize": "^4.42.0",
     "webpack": "^4.29.5"
   }
