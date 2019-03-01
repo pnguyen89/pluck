@@ -570,56 +570,68 @@ module.exports.insertComment = (iduser, idplant, comment, callback) => {
 };
 
 module.exports.selectAllComments = (callback) => {
+  // get all comments
   connection.query('SELECT * FROM comments', (err, comments) => {
     if (err) {
       callback(err, null);
     } else {
+      // send back the comments
       callback(null, comments);
     }
   });
 };
 
 module.exports.selectAllUsersComments = (iduser, callback) => {
+  // get all comments with a specific user id
   connection.query(`SELECT * FROM comments WHERE iduser = ${iduser}`, (err, comments) => {
     if (err) {
       callback(err, null);
     } else {
+      // send back the comments
       callback(null, comments);
     }
   });
 };
 
 module.exports.selectAllPlantsComments = (idplant, callback) => {
+  // get all comments with a specific plant id
   connection.query(`SELECT * FROM comments WHERE idplant = ${idplant}`, (err, comments) => {
     if (err) {
       callback(err, null);
     } else {
+      // send back comments
       callback(null, comments);
     }
   });
 };
 
 module.exports.deletePlant = (idplant, callback) => {
+  // delete from comments first
   connection.query(`DELETE FROM comments WHERE idplant = ${idplant}`, (err) => {
     if (err) {
       callback(err, null);
     } else {
+      // then delete from usersliked
       connection.query(`DELETE FROM usersLiked WHERE idplant = ${idplant}`, (err2) => {
         if (err2) {
           callback(err2, null);
         } else {
+          // then delete from usersplants
           connection.query(`DELETE FROM usersPlants WHERE idplant = ${idplant}`, (err3) => {
             if (err3) {
               callback(err3, null);
             } else {
+              // finally delete from the plants table
               connection.query(`DELETE FROM plants WHERE id = ${idplant}`, (err4) => {
                 if (err4) {
                   callback(err4, null);
                 } else {
+                  // get the remaining plants
                   module.exports.selectAllPlants((err5, plants) => {
                     if (err5) {
                       callback(err5, null);
                     } else {
+                      // send back the plants
                       callback(null, plants);
                     }
                   });
