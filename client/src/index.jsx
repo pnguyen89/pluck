@@ -52,10 +52,10 @@ class App extends React.Component {
   // function gets called when submit button is clicked in zipcode view
   zipCodeSubmit(userZip) {
     // get req to server
-    axios.get(`/user/zipcode?zipcode=${userZip.zipcode}`)
+    axios.get(`/zipcode?zipcode=${userZip.zipcode}`)
     // server will grab plants in this zipcode from db and send back
       .then((res) => {
-        console.log(res.data);
+        console.log('here', res.data);
         // data state in index component will be updated to those plants
         this.setState({
           plants: res.data,
