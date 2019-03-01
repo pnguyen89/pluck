@@ -2,14 +2,29 @@ import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
+// import { withStyles } from '@material-ui/core/styles'; // now in autosuggest
+// import MenuItem from '@material-ui/core/MenuItem'; // now in autosuggest
+// import TextField from '@material-ui/core/TextField'; // now in autosuggest
 import API_URL from '../../../config'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Redirect } from 'react-router-dom';
 import config from '../../../config';
+import {render} from 'react-dom'; // added for downshift
+import Downshift from 'downshift'; // added for downshift
+// added for react-autosuggest
+import Autosuggest from 'react-autosuggest';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import Popper from '@material-ui/core/Popper';
+import { withStyles } from '@material-ui/core/styles'
+
+// END added for react-autosuggest
+
+// const NewFandV = require('../../../NewFAndV');
 
 const styles = theme => ({
   container: {
@@ -27,61 +42,118 @@ const styles = theme => ({
     display: 'none',
   },
 });
-
-// for drop down
-const currencies = [
-  {
-    value: 'Strawberries',
-    label: 'Strawberries',
-  },
-  {
-    value: 'Oranges',
-    label: 'Oranges',
-  },
-  {
-    value: 'Figs',
-    label: 'Figs',
-  },
-  {
-    value: 'Tomatoes',
-    label: 'Tomatoes',
-  },
-  {
-    value: 'Squash',
-    label: 'Squash',
-  },
-  {
-    value: 'Rosemary',
-    label: 'Rosemary',
-  },
-  {
-    value: 'Snap Peas',
-    label: 'Snap Peas',
-  },
-  {
-    value: 'Apples',
-    label: 'Apples',
-  },
-  {
-    value: 'Basil',
-    label: 'Basil',
-  },
-  {
-    value: 'Peaches',
-    label: 'Peaches',
-  },
-];
+// for OLD drop down list
+// const currenciesOLD = [
+//   {
+//     value: 'Strawberries',
+//     label: 'Strawberries',
+//   },
+//   {
+//     value: 'Oranges',
+//     label: 'Oranges',
+//   },
+//   {
+//     value: 'Figs',
+//     label: 'Figs',
+//   },
+//   {
+//     value: 'Tomatoes',
+//     label: 'Tomatoes',
+//   },
+//   {
+//     value: 'Squash',
+//     label: 'Squash',
+//   },
+//   {
+//     value: 'Rosemary',
+//     label: 'Rosemary',
+//   },
+//   {
+//     value: 'Snap Peas',
+//     label: 'Snap Peas',
+//   },
+//   {
+//     value: 'Apples',
+//     label: 'Apples',
+//   },
+//   {
+//     value: 'Basil',
+//     label: 'Basil',
+//   },
+//   {
+//     value: 'Peaches',
+//     label: 'Peaches',
+//   },
+// ];
+const currencies = [{
+  Apples: 'https://i.imgur.com/VWk0EHqh.jpg',
+  Apricot: 'https://i.imgur.com/9Xv87cDh.jpg',
+  Artichoke: 'https://i.imgur.com/Fir9Czch.jpg',
+  Arugula: 'https://i.imgur.com/tV6bWixh.jpg',
+  Bananas: 'https://i.imgur.com/XxL6baYh.jpg',
+  Beans: 'https://i.imgur.com/UWr8qiRh.jpg',
+  Blueberries: 'https://i.imgur.com/SGlygBCh.jpg',
+  'Bok Choy': 'https://i.imgur.com/flkU578h.jpg',
+  Broccoli: 'https://i.imgur.com/rc5y4tKh.jpg',
+  'Brussel Sprouts': 'https://i.imgur.com/IEhPjjJh.jpg',
+  Cabbage: 'https://i.imgur.com/SYUmqEqh.jpg',
+  Cauliflower: 'https://i.imgur.com/XN4JXmVh.png',
+  Celery: 'https://i.imgur.com/M4mtnuth.jpg',
+  Cherries: 'https://i.imgur.com/pNhAoNdh.jpg',
+  'Chile Peppers': 'https://i.imgur.com/meQyn3jh.jpg',
+  'Collard Greens': 'https://i.imgur.com/BLA5Jveh.jpg',
+  Corn: 'https://i.imgur.com/mi1TRHbh.jpg',
+  Cucumber: 'https://i.imgur.com/jnNOahTh.jpg',
+  Dewberry: 'https://i.imgur.com/fgRXi2Xh.jpg',
+  Dill: 'https://i.imgur.com/uLa4koEh.jpg',
+  'Elephant Fruit': 'https://i.imgur.com/uCapFRJh.jpg',
+  Peas: 'https://i.imgur.com/3omJ6Dkh.jpg',
+  'Escarole Lettuce': 'https://i.imgur.com/T80eHJPh.png',
+  Fig: 'https://i.imgur.com/KSITPcoh.jpg',
+  Garlic: 'https://i.imgur.com/G7ql5gch.jpg',
+  Grapes: 'https://i.imgur.com/Z2RkzoYh.jpg',
+  Honeydew: 'https://i.imgur.com/EBAG2HXh.jpg',
+  Kiwi: 'https://i.imgur.com/5fIk7nbh.jpg',
+  Leeks: 'https://i.imgur.com/cSzDYFfh.jpg',
+  Mango: 'https://i.imgur.com/THfmOcZh.jpg',
+  Mushrooms: 'https://i.imgur.com/txxOeI6h.jpg',
+  Noni: 'https://i.imgur.com/MDa7epQh.jpg',
+  Okra: 'https://i.imgur.com/RZO2RVMh.jpg',
+  Olive: 'https://i.imgur.com/Yuud9Vrh.jpg',
+  Oregano: 'https://i.imgur.com/t9dH9Cdh.jpg',
+  Parsley: 'https://i.imgur.com/9eRh3ohh.jpg',
+  Parsnip: 'https://i.imgur.com/OJI7nN9h.jpg',
+  Peach: 'https://i.imgur.com/I6Qij5fh.jpg',
+  Pineapple: 'https://i.imgur.com/vZ0sFH7h.jpg',
+  Pumpkins: 'https://i.imgur.com/xCVsN2Wh.jpg',
+  Quince: 'https://i.imgur.com/b8pYNLCh.jpg',
+  Radicchio: 'https://i.imgur.com/jH9e8dgh.jpg',
+  Radishes: 'https://i.imgur.com/mN2b6a9h.jpg',
+  Rambutan: 'https://i.imgur.com/pcCy6Zmh.png',
+  Raspberry: 'https://i.imgur.com/m1AwCIhh.jpg',
+  Rosemary: 'https://i.imgur.com/qB4w42Bh.jpg',
+  Rutabagas: 'https://i.imgur.com/ecOahpmh.jpg',
+  Sage: 'https://i.imgur.com/EzHuv6eh.jpg',
+  Shallots: 'https://i.imgur.com/XEDKe6Zh.jpg',
+  Strawberries: 'https://i.imgur.com/XbgKeGlh.jpg',
+  Squash: 'https://i.imgur.com/InFdzqFh.jpg',
+  'Sweet Potatoes': 'https://i.imgur.com/CFfgmJLh.jpg',
+  Thyme: 'https://i.imgur.com/8rfdjlSh.jpg',
+  Pears: 'https://i.imgur.com/QFH6lVZh.jpg',
+  Zucchini: 'https://i.imgur.com/pNHF6S6h.jpg',
+}];
 
 class PlantProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       // type: '',
+      username: props.username,
+      currency: 'Select',
+      address: 'ADDRESS HERE',
       description: '',
       image: '',
       loggedIn: false,
-      currency: 'Select',
-      username: props.username,
     };
     this.getPlantType = this.getPlantType.bind(this);
     this.fileSelectHandler = this.fileSelectHandler.bind(this);
@@ -103,17 +175,16 @@ class PlantProfile extends React.Component {
       });
     }
   }
-
+  // !!!!! DISABLED TEMPORARILY !!!! no endpoint for /plant/category
   // get req to server to grab correct image based on selected type
-  getPlantType() {
-    axios.get(`/plant/category?category=${this.state.currency}`) // currency is plant type
-      .then((res) => {
-        console.log(res);
-        const plantImage = res.data[0];
-        this.setState({ image: plantImage }); // this is not working yet
-      });
-  }
-
+  // getPlantType() {
+  //   axios.get(`/plant/category?category=${this.state.currency}`) // currency is plant type
+  //     .then((res) => {
+  //       console.log(res);
+  //       const plantImage = res.data[0];
+  //       this.setState({ image: plantImage }); // this is not working yet
+  //     });
+  // }
 
   handleChange(name) {
     return (event) => {
@@ -175,10 +246,12 @@ class PlantProfile extends React.Component {
   // function when submit button is pressed
   submitPlant() {
     const {
+      username,
+      address,
+      zipcode,
       currency,
       description,
       image,
-      username,
     } = this.state;
 
     // change state to redirect to myProfile
@@ -198,8 +271,8 @@ class PlantProfile extends React.Component {
         description: 'This is a description' || this.state.description,
       },
     })
-      .then((res) => { console.log(res); })
-      .catch((err) => { console.log(err); });
+      .then((res) => { console.log('CreatePlantProfile res: ', res); })
+      .catch((err) => { console.log('CreatePlantProfile error: ', err); });
 
     // set state is async so needs a second to load
     setTimeout(() => {
