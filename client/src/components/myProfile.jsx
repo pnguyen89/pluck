@@ -140,6 +140,7 @@ class MyProfile extends React.Component {
     this.deleteButton = this.deleteButton.bind(this);
     this.toggleButton = this.toggleButton.bind(this);
     this.handleLike = this.handleLike.bind(this); // like button
+    this.handleToggle = this.handleToggle.bind(this); // checkbox for plant to be "on"
   }
 
   // remove plant from your plants completely
@@ -162,9 +163,9 @@ class MyProfile extends React.Component {
       .catch((err) => { console.log('could not delete plant', err); });
   }
 
-  // toggle to indicate no more plucking, but still on your plant profile
+  // like toggle button to indicate no more plucking, but still on your plant profile
   toggleButton() {
-    console.log('toggle button clicked');
+    console.log('like toggle button clicked');
     // const { userId } = this.state;
     // const { plantId } = this.props;
     // axios.post('/user/toggle', { userId, plantId })
@@ -181,16 +182,33 @@ class MyProfile extends React.Component {
     this.setState({ open: false });
   }
 
-  // for toggle plant
-  // changed from double arrow, may not work!!
-  handleChange(name) {
-    return event => this.setState({ [name]: event.target.checked });
-  }
+  // // for toggle plant
+  // // changed from double arrow, may not work!!
+  // handleChange(name) {
+  //   return event => this.setState({ [name]: event.target.checked });
+  // }
 
   // like button
   handleLike(plantId, bool) {
     console.log('like button toggled');
     console.log(plantId, bool);
+  }
+
+  // toggle plant on and off for plucking
+  handleToggle(plantId) {
+    console.log('checkbox for plucking');
+    console.log(plantId);
+    axios({
+      method: 'put',
+      url: '/toggle',
+      data: {
+        idplant: plantId,
+      },
+    })
+      .then(() => {
+        console.log('plant plucking toggle clicked');
+      })
+      .catch((err) => { console.log(`plant plucking toggle unsuccessful due to ${err}`); });
   }
 
   // render username, zip, and user plants dynamically
@@ -246,40 +264,30 @@ class MyProfile extends React.Component {
                   <FavoriteIcon />
                 </IconButton>
                 <FormControlLabel
-                  control={
-                    <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} value="checkedH" onClick={() => {
-                      this.handleLike(plant.id, false)
-                    }} />
-                  }
+                  control={(
+                    <Checkbox
+                      icon={<FavoriteBorder />}
+                      checkedIcon={<Favorite />}
+                      value="checkedH"
+                      onClick={() => {
+                        this.handleLike(plant.id);
+                      }}
+                    />
+)}
                   label="Like"
                 />
                 <FormControlLabel
-                  control={
+                  control={(
                     <Checkbox
-                      icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-                      checkedIcon={<CheckBoxIcon fontSize="small" />}
+                      icon={<CheckBoxIcon fontSize="small" />}
+                      checkedIcon={<CheckBoxOutlineBlankIcon fontSize="small" />}
                       value="checkedI"
-                    />
-                  }
-                  label="Custom size"
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      classes={{
-                        switchBase: classes.iOSSwitchBase,
-                        bar: classes.iOSBar,
-                        icon: classes.iOSIcon,
-                        iconChecked: classes.iOSIconChecked,
-                        checked: classes.iOSChecked,
+                      onClick={() => {
+                        this.handleToggle(plant.id);
                       }}
-                      disableRipple
-                      checked={this.state.checkedB}
-                      onChange={this.handleChange('checkedB')}
-                      value="checkedB"
                     />
-                  }
-                  label="iOS style"
+)}
+                  label="Ready for Plucking"
                 />
               </Card>
             );
@@ -289,7 +297,7 @@ class MyProfile extends React.Component {
         <div>
           <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
             Add a Plant
-        </Button>
+          </Button>
           <Dialog
             open={this.state.open}
             onClose={this.handleClose}
@@ -299,7 +307,7 @@ class MyProfile extends React.Component {
             <DialogContent>
               <DialogContentText>
                 Add a new plant for fellow Pluckers to Pluck!
-            </DialogContentText>
+              </DialogContentText>
               <TextField
                 id="outlined-with-placeholder"
                 label="Pluck Me!"
@@ -329,7 +337,7 @@ class MyProfile extends React.Component {
               </Button>
               <Button onClick={this.handleClose} color="primary">
                 Subscribe
-            </Button>
+              </Button>
             </DialogActions>
           </Dialog>
         </div>
