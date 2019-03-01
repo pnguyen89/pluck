@@ -7,8 +7,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -72,8 +70,6 @@ class ViewPlantProfile extends React.Component {
     this.favoriteButton = this.favoriteButton.bind(this);
     this.getDirections = this.getDirections.bind(this);
     this.getLocation = this.getLocation.bind(this);
-    this.deleteButton = this.deleteButton.bind(this);
-    this.toggleButton = this.toggleButton.bind(this);
   }
 
   // doesnt work
@@ -116,23 +112,6 @@ class ViewPlantProfile extends React.Component {
       .catch((err) => { console.log(err); });
   }
 
-  deleteButton() {
-    console.log('delete button clicked');
-    // const { userId } = this.state;
-    // const { plantId } = this.props;
-    // axios.post('/user/delete', { userId, plantId })
-    //   .then(() => console.log('plant removed'))
-    //   .catch((err) => { console.log('could not delete plant', err); });
-  }
-
-  toggleButton() {
-    console.log('toggle button clicked');
-    // const { userId } = this.state;
-    // const { plantId } = this.props;
-    // axios.post('/user/toggle', { userId, plantId })
-    //   .then(() => console.log('plant toggled'))
-    //   .catcch((err) => { console.log(`${err} in toggling plant`); });
-  }
 
   showPosition(position) {
     // x.innerHTML = 'Latitude: ' + position.coords.latitude +
@@ -162,13 +141,6 @@ class ViewPlantProfile extends React.Component {
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="delete this plant" onClick={this.deleteButton}>
-            <DeleteOutlinedIcon className={classes.icon} />
-          </IconButton>
-          <IconButton aria-label="toggle on and off" onClick={this.toggleButton}>
-            {/* <Toggle style={iconStyles} color={red500} hoverColor={greenA200} /> */}
             <FavoriteIcon />
           </IconButton>
           <NavLink to="/plantLocation" style={{ textDecoration: 'none' }}>

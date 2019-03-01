@@ -189,7 +189,7 @@ class PlantProfile extends React.Component {
     // axios.post('/plant/profile', { currency, description, image, username })
     axios({
       method: 'post',
-      url: '/plant/user'
+      url: '/plant/user',
       data: {
         username: 'acreed1998' || this.state.username,
         currency: 'Apples' || this.state.currency,

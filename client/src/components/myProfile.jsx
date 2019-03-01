@@ -10,12 +10,16 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import NoSsr from '@material-ui/core/NoSsr';
 import Paper from '@material-ui/core/Paper'
@@ -23,8 +27,9 @@ import { Redirect } from 'react-router-dom';
 // import Select from 'react-select';
 import SampleData from './SampleData.js';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = {
   root: {
@@ -50,12 +55,41 @@ class MyProfile extends React.Component {
       image: '',
       loggedIn: false,
       currency: 'Select',
-      username: props.username,
+      userId: this.props.id,
     };
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
+    this.toggleButton = this.toggleButton.bind(this);
   }
 
+  // remove plant from your plants completely
+  deleteButton(plantId) {
+    console.log('delete button clicked');
+    console.log(this.state.userId);
+    console.log('works', plantId);
+    const { userId } = this.state;
+    axios({
+      method: 'delete',
+      url: '/plant',
+      data: {
+        username: userId,
+        plantid: plantId,
+      },
+    })
+      .then(() => console.log('plant removed'))
+      .catch((err) => { console.log('could not delete plant', err); });
+  }
+
+  // toggle to indicate no more plucking, but still on your plant profile
+  toggleButton() {
+    console.log('toggle button clicked');
+    // const { userId } = this.state;
+    // const { plantId } = this.props;
+    // axios.post('/user/toggle', { userId, plantId })
+    //   .then(() => console.log('plant toggled'))
+    //   .catcch((err) => { console.log(`${err} in toggling plant`); });
+  }
   // for the form that adds a plant demo version
   handleClickOpen() {
     this.setState({ open: true });
@@ -94,15 +128,15 @@ class MyProfile extends React.Component {
           Your Plants
           </Typography>
 
-          {this.state.userPlants.map((plant) => {
+          {this.state.userPlants === undefined ? null : this.state.userPlants.map((plant) => {
             return (
-              <Card className={classes.card}>
+              <Card className={classes.card} key={plant.id}>
                 <CardHeader
                   title={plant.title}
                 />
                 <CardMedia
                   className={classes.media}
-                  image={plant.image_url}
+                  image={plant.imagelink}
                   title={plant.title}
                 />
                 <CardContent>
@@ -110,6 +144,13 @@ class MyProfile extends React.Component {
                     {plant.description}
                   </Typography>
                 </CardContent>
+                <IconButton aria-label="delete this plant" onClick={this.deleteButton(plant.id)}>
+                  <DeleteOutlinedIcon className={classes.icon} />
+                </IconButton>
+                <IconButton aria-label="toggle on and off" onClick={this.toggleButton}>
+                  {/* <Toggle style={iconStyles} color={red500} hoverColor={greenA200} /> */}
+                  <FavoriteIcon />
+                </IconButton>
               </Card>
             );
           })

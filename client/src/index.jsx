@@ -39,7 +39,7 @@ class App extends React.Component {
   // function gets called when submit button is clicked in zipcode view
   zipCodeSubmit(userZip) {
     // get req to server
-    axios.get(`/user/zipcode?zipcode=${userZip.zipcode}`)
+    axios.get(`/zipcode?zipcode=${userZip.zipcode}`)
     // server will grab plants in this zipcode from db and send back
       .then((res) => {
         console.log(res.data);
@@ -94,6 +94,7 @@ class App extends React.Component {
     })
       .then((res) => {
         // set states with all user info
+        console.log(res.data);
         this.setState({
           userId: res.data.id,
           zipcode: res.data.zipcode,
@@ -122,7 +123,7 @@ class App extends React.Component {
               <Route path="/userLogin" render={() => <UserLogin plants={this.state.plants} zipcode={this.state.zipcode} onSubmit={this.userLogin} />} />
               <Route path="viewPlantProfile" render={() => <ViewPlantProfile userId={this.state.userId} />} />
               <Route path="/submitPlant" render={() => <CreatePlantProfile userId={this.state.userId} username={this.state.username} />} />
-              <Route path="/myProfile" render={() => <MyProfile zipcode={this.state.zipcode} plants={this.state.userPlants} username={this.state.username} />} />
+              <Route path="/myProfile" render={() => <MyProfile zipcode={this.state.zipcode} plants={this.state.userPlants} username={this.state.username} id={this.state.userId} />} />
               <Route path="/plantLocation" component={MapView} />
               <Route component={Error} />
             </Switch>
