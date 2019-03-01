@@ -596,19 +596,23 @@ module.exports.selectAllPlantsComments = (idplant, callback) => {
     } else {
       // send back comments
       const commentHolder = [];
-      _.forEach(comments, (comment, index) => {
-        module.exports.selectUserById(comment.iduser, (err2, user) => {
-          if (err2) {
-            callback(err2, null);
-          } else {
-            comment.username = user.username;
-            commentHolder.push(comment);
-            if (index === comments.length - 1) {
-              callback(null, commentHolder);
+      if (comments.length !== 0) {
+        _.forEach(comments, (comment, index) => {
+          module.exports.selectUserById(comment.iduser, (err2, user) => {
+            if (err2) {
+              callback(err2, null);
+            } else {
+              comment.username = user.username;
+              commentHolder.push(comment);
+              if (index === comments.length - 1) {
+                callback(null, commentHolder);
+              }
             }
-          }
+          });
         });
-      });
+      } else {
+        callback(null, commentHolder);
+      }
     }
   });
 };
