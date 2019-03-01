@@ -131,7 +131,7 @@ class ViewPlantProfile extends React.Component {
         />
         <CardMedia
           className={classes.media}
-          image={this.props.plant.image_url}
+          image={this.props.plant.imagelink}
           title={this.props.plant.title}
         />
         <CardContent>
