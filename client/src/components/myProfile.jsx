@@ -212,6 +212,20 @@ class MyProfile extends React.Component {
   }
 
   // render username, zip, and user plants dynamically
+  // Get user plant on profile mount
+  componentDidMount() {
+    const componentThis = this;
+    axios({
+      method: 'get',
+      url: `/user/profile?username=${componentThis.state.username}`,
+    }).then((aResponse) => {
+      componentThis.setState({ userPlants: aResponse.data });
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+// render username, zip, and user plants dynamically
   render() {
     const { classes } = this.props;
     return (
