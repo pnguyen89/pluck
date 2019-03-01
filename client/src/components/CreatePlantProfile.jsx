@@ -96,6 +96,8 @@ class PlantProfile extends React.Component {
       loggedIn: false,
       currency: 'Select',
       username: props.username,
+      plantAddress: '',
+      plantZipcode: '',
     };
     this.getPlantType = this.getPlantType.bind(this);
     this.fileSelectHandler = this.fileSelectHandler.bind(this);
@@ -114,6 +116,14 @@ class PlantProfile extends React.Component {
     if (event.target.id === 'description') {
       this.setState({
         description: event.target.value,
+      });
+    } else if (event.target.id === 'plantAddress') {
+      this.setState({
+        plantAddress: event.target.value,
+      });
+    } else if (event.target.id === 'plantZipcode') {
+      this.setState({
+        plantZipcode: event.target.value,
       });
     }
   }
@@ -207,8 +217,8 @@ class PlantProfile extends React.Component {
       data: {
         username: this.state.username,
         currency: this.state.currency,
-        address: 'Pretend This String Is An Address' || this.state.address,
-        zipcode: '70115' || this.state.zipcode,
+        address: this.state.plantAddress,
+        zipcode: this.state.plantZipcode,
         description: this.state.description,
       },
     })
@@ -259,7 +269,8 @@ class PlantProfile extends React.Component {
           </TextField>
         </form>
         <form className={classes.container} noValidate autoComplete="off">
-
+          <TextField id="plantAddress" label="Address" className={classes.textField} margin="normal" variant="outlined" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
+          <TextField id="plantZipcode" label="Zipcode" className={classes.textField} margin="normal" variant="outlined" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
           <TextField
             id="description"
             label="description"
