@@ -270,13 +270,13 @@ class PlantProfile extends React.Component {
               selectedItem,
             }) => (
                 <div>
-                  <TextField id="plantName" label="Plant Name" className={classes.textField} margin="normal" variant="outlined" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} {...getInputProps()} />
-                  <ul {...getMenuProps()}>
+                  <TextField id="plantName" label="Plant Name" className={classes.textField} margin="normal" variant="standard" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} {...getInputProps()} />
+                  <div className="dropdown-holder" {...getMenuProps()}>
                     {isOpen
                       ? currencies
                         .filter(item => !inputValue || item.value.toLowerCase().includes(inputValue.toLowerCase()))
                         .map((item, index) => (
-                          <li
+                          <div className="dropdown-item"
                             {...getItemProps({
                               key: item.value,
                               index,
@@ -289,17 +289,17 @@ class PlantProfile extends React.Component {
                             })}
                           >
                             {item.value}
-                          </li>
+                          </div>
                         ))
                       : null}
-                  </ul>
+                  </div>
                 </div>
               )}
           </Downshift>
         </form>
         <form className={classes.container} noValidate autoComplete="off">
-          <TextField id="plantAddress" label="Address" className={classes.textField} margin="normal" variant="outlined" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
-          <TextField id="plantZipcode" label="Zipcode" className={classes.textField} margin="normal" variant="outlined" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
+          <TextField id="plantAddress" label="Address" className={classes.textField} margin="normal" variant="standard" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
+          <TextField id="plantZipcode" label="Zipcode" className={classes.textField} margin="normal" variant="standard" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
           <TextField
             id="description"
             label="description"
@@ -307,7 +307,7 @@ class PlantProfile extends React.Component {
             rows="4"
             className={classes.textField}
             margin="normal"
-            variant="outlined"
+            variant="standard"
             onChange={this.onChange}
             SelectProps={{
               MenuProps: {
