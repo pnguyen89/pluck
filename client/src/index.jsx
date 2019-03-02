@@ -12,6 +12,7 @@ import ViewPlantProfile from './components/ViewPlantProfile.jsx';
 import CreatePlantProfile from './components/CreatePlantProfile.jsx';
 import MyProfile from './components/myProfile.jsx';
 import MapView from './components/MapView.jsx';
+import MapViewContainer from './components/MapViewContainer.jsx';
 // import SampleData from "./components/SampleData";
 
 
@@ -143,7 +144,8 @@ class App extends React.Component {
               <Route path="viewPlantProfile" render={() => <ViewPlantProfile userId={this.state.userId} />} />
               <Route path="/submitPlant" render={() => <CreatePlantProfile userId={this.state.userId} username={this.state.username} />} />
               <Route path="/myProfile" render={() => <MyProfile zipcode={this.state.zipcode} plants={this.state.userPlants} username={this.state.username} id={this.state.userId} handleChange={this.handleChange} />} />
-              <Route path="/plantLocation" component={MapView} />
+              <Route path="/plantLocation" component={MapViewContainer} />
+
               <Route component={Error} />
             </Switch>
           </div>
