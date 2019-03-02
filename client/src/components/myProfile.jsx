@@ -45,7 +45,6 @@ import SampleData from './SampleData.js';
 // import Typography from '@material-ui/core/Typography';
 // import { withStyles } from '@material-ui/core/styles';
 // import Typography from '@material-ui/core/Typography';
-import CheckboxLabels from './CheckboxLabels.jsx';
 
 const styles = {
   root: {
