@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import MapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
 import config from '../../../config';
+import PlantPin from './plant-pin.jsx';
+import PlantInfo from './plant-info.jsx';
 
 const TOKEN = config.pubKey; // Set your mapbox token here
 const navStyle = {
@@ -13,53 +15,43 @@ export default class MapView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      viewport: {
-        latitude: 37.785164,
-        longitude: -100,
-        zoom: 2.8,
-        bearing: 0,
-        pitch: 0,
-        width: 500,
-        height: 500,
-      },
+      viewport: props.viewport,
       popupInfo: null,
     };
-    this.renderPopup = this.renderPopup.bind(this);
     this.updateViewport = this.updateViewport.bind(this);
   }
 
-  updateViewport(viewport) {
-    this.setState({ viewport });
+  componentWillReceiveProps({ viewport: newViewPort }) {
+    this.setState({
+      viewport: newViewPort,
+    });
   }
 
-  renderPopup() {
-    const { popupInfo } = this.state;
-    return popupInfo && (
-      <Popup
-        tipSize={5}
-        anchor="bottom-right"
-        longitude={popupInfo.state.longitude}
-        latitude={popupInfo.state.latitude}
-        onClose={() => this.setState({ popupInfo: null })}
-        closeOnClick
-      >
-        <p>TEST</p>
-      </Popup>
-    );
+  updateViewport(viewport) {
+    const { viewport: { latitude, longitude }} = this.props;
+    this.setState({ 
+      viewport: {
+        latitude,
+        longitude,
+        ...viewport,
+      } });
   }
+
 
   render() {
     const { popupInfo, viewport } = this.state;
     return (
       <MapGL
         {...viewport}
-        mapStyle="mapbox://styles/mapbox/dark-v9"
+        mapStyle="mapbox://styles/mapbox/basic-v9"
         mapboxApiAccessToken={TOKEN}
         onViewportChange={this.updateViewport}
       >
-        {this.renderPopup()}
+
+        {/* {CITIES.map(this.renderPlantMarker)} */}
+        {/* {this.renderPopup()} */}
         <div className="nav" style={navStyle}>
-          <NavigationControl />
+          <NavigationControl onViewportChange={this.updateViewport} />
         </div>
       </MapGL>
     );
