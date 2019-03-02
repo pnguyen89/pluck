@@ -196,14 +196,14 @@ class ViewPlantProfile extends React.Component {
                 Get Directions
             </Button>
           </NavLink>
-          <div onClick={() => {this.commentToggle()}} >
+          {/* <div onClick={() => {this.commentToggle()}} >
             <i class="far fa-comment-alt"></i>
             {/* <span style="font-size: 48px; color: Dodgerblue;"> */}
-            <span fontSize="48px" color="Dodgerblue">
+            {/* <span fontSize="48px" color="Dodgerblue">
               <i class="far fa-comment-alt"></i>
             </span>
             <input type="image" src={logo} width="7%" height="auto" onClick={() => this.changeView('search')} />
-          </div>
+          </div> */} 
           {/* <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
             
           </IconButton> */}
