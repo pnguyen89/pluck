@@ -12,6 +12,7 @@ import ViewPlantProfile from './components/ViewPlantProfile.jsx';
 import CreatePlantProfile from './components/CreatePlantProfile.jsx';
 import MyProfile from './components/myProfile.jsx';
 import MapView from './components/MapView.jsx';
+import MapViewContainer from './components/MapViewContainer.jsx';
 // import SampleData from "./components/SampleData";
 
 
@@ -30,6 +31,7 @@ class App extends React.Component {
     // bind to this all functions being handed down
     this.zipCodeSubmit = this.zipCodeSubmit.bind(this);
     this.userLogin = this.userLogin.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -107,6 +109,7 @@ class App extends React.Component {
     })
       .then((res) => {
         // set states with all user info
+        console.log(res.data);
         this.setState({
           userId: res.data.id,
           zipcode: res.data.zipcode,
@@ -119,6 +122,11 @@ class App extends React.Component {
       .catch((err) => { console.log(err); });
   }
 
+  handleChange(name) {
+    return (event) => {
+      this.setState({ [name]: event.target.checked });
+    };
+  }
 
   render() {
     return (
@@ -135,8 +143,9 @@ class App extends React.Component {
               <Route path="/userLogin" render={() => <UserLogin plants={this.state.plants} zipcode={this.state.zipcode} onSubmit={this.userLogin} />} />
               <Route path="viewPlantProfile" render={() => <ViewPlantProfile userId={this.state.userId} />} />
               <Route path="/submitPlant" render={() => <CreatePlantProfile userId={this.state.userId} username={this.state.username} />} />
-              <Route path="/myProfile" render={() => <MyProfile zipcode={this.state.zipcode} plants={this.state.userPlants} username={this.state.username} />} />
-              <Route path="/plantLocation" component={MapView} />
+              <Route path="/myProfile" render={() => <MyProfile zipcode={this.state.zipcode} plants={this.state.userPlants} username={this.state.username} id={this.state.userId} handleChange={this.handleChange} />} />
+              <Route path="/plantLocation" component={MapViewContainer} />
+
               <Route component={Error} />
             </Switch>
           </div>
