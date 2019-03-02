@@ -310,20 +310,6 @@ class MyProfile extends React.Component {
                   )}
                   label="Ready for Plucking"
                 />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={this.state[`{plant.id}`]}
-                      onChange={handleChange(plant.title)}
-                      value="liked"
-                      classes={{
-                        root: classes.root,
-                        checked: classes.checked,
-                      }}
-                    />
-                  }
-                  label="Custom color"
-                />
               </Card>
             );
           })
