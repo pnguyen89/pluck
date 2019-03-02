@@ -17,6 +17,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
+
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
@@ -139,7 +140,7 @@ class ButtonAppBar extends React.Component {
               >
                 <MenuIcon />
               </IconButton>
-              <NavLink to="/"> <img className="logo" src={require('../images/pluck.png')}></img></NavLink>
+              <NavLink to="/"> <img className="logo" alt="" src={require('../images/pluck.png')} /></NavLink>
               <Typography variant="h6" color="inherit" className={classes.grow}>
                         p l u c k
               </Typography>
