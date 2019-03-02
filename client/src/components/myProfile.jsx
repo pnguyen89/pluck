@@ -161,8 +161,14 @@ class MyProfile extends React.Component {
     return (
       <div className={classes.root}>
         <div>
+          {/* <Fab color="primary" aria-label="Add a Plant" className={classes.fab}>
+          <NavigationIcon className={classes.extendedIcon}
+            <AddIcon onclick={this.submitPlant} />add plant
+          </Fab> */}
           <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} styles={styles.fab}>
+            {/* <NavigationIcon className={classes.extendedIcon} /> */}
         Add a Plant
+            {/* <ContentAdd /> */}
           </Fab>
         </div>
         <Typography
