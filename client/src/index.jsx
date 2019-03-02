@@ -54,6 +54,7 @@ class App extends React.Component {
   // function gets called when submit button is clicked in zipcode view
   zipCodeSubmit(userZip) {
     // get req to server
+    console.log(userZip);
     axios.get(`/zipcode?zipcode=${userZip.zipcode}`)
     // server will grab plants in this zipcode from db and send back
       .then((res) => {

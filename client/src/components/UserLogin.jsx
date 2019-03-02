@@ -55,7 +55,7 @@ class UserLogin extends React.Component {
     }
   }
 
-  // function that sends get req to server to retrieve user info
+  // function that sends get req to server to retrieve user info //
   submitUserInfo() {
     const { username, password } = this.state;
     this.props.onSubmit({ username, password }); // function from index.jsx --> gets plants from users zip
@@ -84,7 +84,7 @@ class UserLogin extends React.Component {
     const { classes } = this.props;
 
     if (this.state.redirect === true && this.state.loggedIn === true) {
-      return <Redirect to="/plantList" />;
+      return <Redirect to="/plantLocation" />;
     }
 
     return (
