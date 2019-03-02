@@ -18,6 +18,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import NavigationIcon from '@material-ui/icons/Navigation';
+
 
 const styles = {
   root: {
@@ -76,6 +81,16 @@ class MyProfile extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
+        <div>
+          {/* <Fab color="primary" aria-label="Add a Plant" className={classes.fab}>
+          <NavigationIcon className={classes.extendedIcon}
+            <AddIcon onclick={this.submitPlant} />add plant
+          </Fab> */}
+          <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} style={{ position: 'absolute', bottom: 50, left: 50 }}>
+            <NavigationIcon className={classes.extendedIcon} />
+        Add a Plant
+          </Fab>
+        </div>
         <Typography
           variant="h5"
           gutterBottom
@@ -121,10 +136,10 @@ class MyProfile extends React.Component {
           })
           }
         </div>
-        <div>
+        {/* <div>
           <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
             Add a Plant
-        </Button>
+          </Button>
           <Dialog
             open={this.state.open}
             onClose={this.handleClose}
@@ -154,7 +169,7 @@ class MyProfile extends React.Component {
             </Button>
             </DialogActions>
           </Dialog>
-        </div>
+        </div> */}
       </div>
     );
   }

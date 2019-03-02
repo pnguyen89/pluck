@@ -3,9 +3,9 @@ import axios from 'axios';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-// import { withStyles } from '@material-ui/core/styles'; // now in autosuggest
-// import MenuItem from '@material-ui/core/MenuItem'; // now in autosuggest
-// import TextField from '@material-ui/core/TextField'; // now in autosuggest
+import { withStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 import API_URL from '../../../config'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -95,23 +95,14 @@ class PlantProfile extends React.Component {
     super(props);
     this.state = {
       // type: '',
-      username: props.username,
-      currency: 'Select',
-      address: 'ADDRESS HERE',
       description: '',
       image: '',
       loggedIn: false,
-<<<<<<< HEAD
-=======
       currency: 'Select',
       username: props.username,
       plantAddress: '',
       plantZipcode: '',
-<<<<<<< HEAD
->>>>>>> 43aee0708ad3e5d298a73cfa7fc3e127ebb21482
-=======
       plantName: '',
->>>>>>> efd20ac2a11dbda355a70e53dc9b96c6636ff7f8
     };
     this.getPlantType = this.getPlantType.bind(this);
     this.fileSelectHandler = this.fileSelectHandler.bind(this);
@@ -146,16 +137,17 @@ class PlantProfile extends React.Component {
       });
     }
   }
-  // !!!!! DISABLED TEMPORARILY !!!! no endpoint for /plant/category
+
   // get req to server to grab correct image based on selected type
-  // getPlantType() {
-  //   axios.get(`/plant/category?category=${this.state.currency}`) // currency is plant type
-  //     .then((res) => {
-  //       console.log(res);
-  //       const plantImage = res.data[0];
-  //       this.setState({ image: plantImage }); // this is not working yet
-  //     });
-  // }
+  getPlantType() {
+    axios.get(`/plant/category?category=${this.state.currency}`) // currency is plant type
+      .then((res) => {
+        console.log(res);
+        const plantImage = res.data[0];
+        this.setState({ image: plantImage }); // this is not working yet
+      });
+  }
+
 
   handleChange(name) {
     return (event) => {
@@ -217,12 +209,10 @@ class PlantProfile extends React.Component {
   // function when submit button is pressed
   submitPlant() {
     const {
-      username,
-      address,
-      zipcode,
       currency,
       description,
       image,
+      username,
     } = this.state;
 
     // change state to redirect to myProfile
@@ -242,8 +232,8 @@ class PlantProfile extends React.Component {
         description: this.state.description,
       },
     })
-      .then((res) => { console.log('CreatePlantProfile res: ', res); })
-      .catch((err) => { console.log('CreatePlantProfile error: ', err); });
+      .then((res) => { console.log(res); })
+      .catch((err) => { console.log(err); });
 
     // set state is async so needs a second to load
     setTimeout(() => {
