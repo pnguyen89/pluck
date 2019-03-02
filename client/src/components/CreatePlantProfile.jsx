@@ -11,21 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Redirect } from 'react-router-dom';
 import config from '../../../config';
-import {render} from 'react-dom'; // added for downshift
-import Downshift from 'downshift'; // added for downshift
-// added for react-autosuggest
-import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import Popper from '@material-ui/core/Popper';
-import { withStyles } from '@material-ui/core/styles'
-
-// END added for react-autosuggest
-
-// const NewFandV = require('../../../NewFAndV');
+import Downshift from 'downshift';
+const Typeahead = require('react-typeahead').Typeahead;
 
 const styles = theme => ({
   container: {
@@ -88,14 +75,16 @@ let currencies = [
   },
 ];
 
+let currencyNames = [];
+
 axios.get('/plantnames').then((result) => {
   const plantArray = [];
   _.forEach(result.data, (plantname) => {
     const obj = {};
     obj.value = plantname;
-    obj.label = plantname;
     plantArray.push(obj);
   });
+  currencyNames = result.data;
   currencies = plantArray;
 }).catch((err) => {
   console.log(err);
@@ -118,7 +107,11 @@ class PlantProfile extends React.Component {
       username: props.username,
       plantAddress: '',
       plantZipcode: '',
+<<<<<<< HEAD
 >>>>>>> 43aee0708ad3e5d298a73cfa7fc3e127ebb21482
+=======
+      plantName: '',
+>>>>>>> efd20ac2a11dbda355a70e53dc9b96c6636ff7f8
     };
     this.getPlantType = this.getPlantType.bind(this);
     this.fileSelectHandler = this.fileSelectHandler.bind(this);
@@ -134,6 +127,7 @@ class PlantProfile extends React.Component {
   // allows us to grab the plant type and description
   onChange(event) {
     // find out if descrip field is being used
+    console.log(event.target.id);
     if (event.target.id === 'description') {
       this.setState({
         description: event.target.value,
@@ -145,6 +139,10 @@ class PlantProfile extends React.Component {
     } else if (event.target.id === 'plantZipcode') {
       this.setState({
         plantZipcode: event.target.value,
+      });
+    } else if (event.target.id === 'plantName') {
+      this.setState({
+        plantName: event.target.value,
       });
     }
   }
@@ -267,32 +265,51 @@ class PlantProfile extends React.Component {
     return (
       <div className="zip-body">
         <form className={classes.container} noValidate autoComplete="off">
-          <TextField
-            id="outlined-select-currency"
-            select
-            label="Select"
-            className={classes.textField}
-            value={this.state.currency}
-            onChange={this.handleChange('currency')} 
-            SelectProps={{
-              MenuProps: {
-                className: classes.menu,
-              },
-            }}
-            helperText="Please select your Plant Type"
-            margin="normal"
-            variant="outlined"
+          {/* <Typeahead className={classes.textField} options={currencyNames} maxVisible={7} /> */}
+          <Downshift
+            itemToString={item => (item ? item.value : '')}
           >
-            {currencies.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+            {({
+              getInputProps,
+              getItemProps,
+              getLabelProps,
+              getMenuProps,
+              isOpen,
+              inputValue,
+              highlightedIndex,
+              selectedItem,
+            }) => (
+                <div>
+                  <TextField id="plantName" label="Plant Name" className={classes.textField} margin="normal" variant="standard" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} {...getInputProps()} />
+                  <div className="dropdown-holder" {...getMenuProps()}>
+                    {isOpen
+                      ? currencies
+                        .filter(item => !inputValue || item.value.toLowerCase().includes(inputValue.toLowerCase()))
+                        .map((item, index) => (
+                          <div className="dropdown-item"
+                            {...getItemProps({
+                              key: item.value,
+                              index,
+                              item,
+                              style: {
+                                backgroundColor:
+                                  highlightedIndex === index ? 'lightgray' : 'white',
+                                fontWeight: selectedItem === item ? 'bold' : 'normal',
+                              },
+                            })}
+                          >
+                            {item.value}
+                          </div>
+                        ))
+                      : null}
+                  </div>
+                </div>
+              )}
+          </Downshift>
         </form>
         <form className={classes.container} noValidate autoComplete="off">
-          <TextField id="plantAddress" label="Address" className={classes.textField} margin="normal" variant="outlined" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
-          <TextField id="plantZipcode" label="Zipcode" className={classes.textField} margin="normal" variant="outlined" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
+          <TextField id="plantAddress" label="Address" className={classes.textField} margin="normal" variant="standard" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
+          <TextField id="plantZipcode" label="Zipcode" className={classes.textField} margin="normal" variant="standard" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
           <TextField
             id="description"
             label="description"
@@ -300,7 +317,7 @@ class PlantProfile extends React.Component {
             rows="4"
             className={classes.textField}
             margin="normal"
-            variant="outlined"
+            variant="standard"
             onChange={this.onChange}
             SelectProps={{
               MenuProps: {
