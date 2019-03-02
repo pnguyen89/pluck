@@ -81,7 +81,6 @@ export default class MapView extends Component {
     const { popupInfo, viewport } = this.state;
     const { allPlants } = this.props;
     return (
-      // <div>{allPlants[0].plant}</div>
       <MapGL
         {...viewport}
         mapStyle="mapbox://styles/mapbox/basic-v9"
