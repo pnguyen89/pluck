@@ -19,7 +19,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import Comments from './Comments.jsx';
+// import Comments from './Comments.jsx';
 import {
   Dialog, DialogActions, DialogContent, DialogContentText,
   DialogTitle, FormGroup, FormControlLabel, Snackbar,
@@ -177,9 +177,9 @@ class ViewPlantProfile extends React.Component {
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
+          {/* <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
             <FavoriteIcon />
-          </IconButton>
+          </IconButton> */}
           <FormControlLabel
             control={(
               <Checkbox

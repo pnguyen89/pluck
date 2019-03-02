@@ -29,11 +29,15 @@ import green from '@material-ui/core/colors/green';
 // import NoSsr from '@material-ui/core/NoSsr';
 // import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import AddIcon from '@material-ui/icons/Add';
+import NavigationIcon from '@material-ui/icons/Navigation';
+
 import {
   Button,
   Card, CardHeader, CardMedia, CardContent, CardActions,
   Dialog, DialogActions, DialogContent, DialogContentText,
-  DialogTitle, FormGroup, FormControlLabel, IconButton, Snackbar,
+  DialogTitle, Fab, FormGroup, FormControlLabel, IconButton, Snackbar,
   SnackbarContent, TextField, withStyles, Typography, Switch } from '@material-ui/core';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
@@ -45,6 +49,7 @@ import SampleData from './SampleData.js';
 // import Typography from '@material-ui/core/Typography';
 // import { withStyles } from '@material-ui/core/styles';
 // import Typography from '@material-ui/core/Typography';
+// import CheckboxLabels from './CheckboxLabels.jsx';
 
 const styles = {
   root: {
@@ -231,11 +236,21 @@ class MyProfile extends React.Component {
     });
   }
 
-// render username, zip, and user plants dynamically
+  // render username, zip, and user plants dynamically
   render() {
     const { classes, handleChange } = this.props;
     return (
       <div className={classes.root}>
+        <div>
+          {/* <Fab color="primary" aria-label="Add a Plant" className={classes.fab}>
+          <NavigationIcon className={classes.extendedIcon}
+            <AddIcon onclick={this.submitPlant} />add plant
+          </Fab> */}
+          <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} style={{ position: 'absolute', bottom: 50, left: 50 }}>
+            {/* <NavigationIcon className={classes.extendedIcon} /> */}
+        Add a Plant
+          </Fab>
+        </div>
         <Typography
           variant="h5"
           gutterBottom
@@ -280,11 +295,11 @@ class MyProfile extends React.Component {
                 <IconButton aria-label="delete this plant" onClick={() => {this.deleteButton(plant.id)}}>
                   <DeleteOutlinedIcon className={classes.icon} />
                 </IconButton>
-                <IconButton aria-label="toggle on and off" onClick={this.toggleButton}>
+                {/* <IconButton aria-label="toggle on and off" onClick={this.toggleButton}> */}
                   {/* <Toggle style={iconStyles} color={red500} hoverColor={greenA200} /> */}
-                  <FavoriteIcon />
-                </IconButton>
-                <FormControlLabel
+                  {/* <FavoriteIcon /> */}
+                {/* </IconButton> */}
+                {/* <FormControlLabel
                   control={(
                     <Checkbox
                       icon={<FavoriteBorder />}
@@ -296,7 +311,7 @@ class MyProfile extends React.Component {
                     />
                   )}
                   label="Like"
-                />
+                /> */}
                 <FormControlLabel
                   control={(
                     <Checkbox
@@ -315,7 +330,7 @@ class MyProfile extends React.Component {
           })
           }
         </div>
-        <div>
+        {/* <div>
           <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
             Add a Plant
           </Button>
@@ -361,7 +376,7 @@ class MyProfile extends React.Component {
               </Button>
             </DialogActions>
           </Dialog>
-        </div>
+        </div> */}
       </div>
     );
   }
