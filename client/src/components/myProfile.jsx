@@ -35,6 +35,12 @@ const styles = {
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
+  fab: {
+    margin: 0,
+    bottom: 50,
+    left: 50,
+    position: 'fixed',
+  },
 };
 // variantIcon and styles1 for snackbar
 const variantIcon = {
@@ -155,7 +161,7 @@ class MyProfile extends React.Component {
     return (
       <div className={classes.root}>
         <div>
-          <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} style={{ position: 'absolute', bottom: 50, left: 50 }}>
+          <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} styles={styles.fab}>
         Add a Plant
           </Fab>
         </div>
