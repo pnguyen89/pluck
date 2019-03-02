@@ -25,6 +25,9 @@ export default class MapView extends Component {
       popupInfo: null,
     };
     this.updateViewport = this.updateViewport.bind(this);
+    this.renderCityMarker = this.renderCityMarker.bind(this);
+    this.renderPopup = this.renderPopup.bind(this);
+
   }
 
   componentWillReceiveProps({ viewport: newViewPort }) {
