@@ -149,6 +149,20 @@ class MyProfile extends React.Component {
     this.handleToggle = this.handleToggle.bind(this); // checkbox for plant to be "on"
   }
 
+  // render username, zip, and user plants dynamically
+  // Get user plant on profile mount
+  componentDidMount() {
+    const componentThis = this;
+    axios({
+      method: 'get',
+      url: `/user/profile?username=${componentThis.state.username}`,
+    }).then((aResponse) => {
+      componentThis.setState({ userPlants: aResponse.data });
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
   // remove plant from your plants completely
   deleteButton(plantId) {
     console.log('delete button clicked');
@@ -165,6 +179,7 @@ class MyProfile extends React.Component {
     })
       .then(() => {
         console.log('plant removed');
+        this.componentDidMount();
       })
       .catch((err) => { console.log('could not delete plant', err); });
   }
@@ -222,19 +237,6 @@ class MyProfile extends React.Component {
       .catch((err) => { console.log(`plant plucking toggle unsuccessful due to ${err}`); });
   }
 
-  // render username, zip, and user plants dynamically
-  // Get user plant on profile mount
-  componentDidMount() {
-    const componentThis = this;
-    axios({
-      method: 'get',
-      url: `/user/profile?username=${componentThis.state.username}`,
-    }).then((aResponse) => {
-      componentThis.setState({ userPlants: aResponse.data });
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
 
   // render username, zip, and user plants dynamically
   render() {
@@ -242,12 +244,7 @@ class MyProfile extends React.Component {
     return (
       <div className={classes.root}>
         <div>
-          {/* <Fab color="primary" aria-label="Add a Plant" className={classes.fab}>
-          <NavigationIcon className={classes.extendedIcon}
-            <AddIcon onclick={this.submitPlant} />add plant
-          </Fab> */}
           <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} style={{ position: 'absolute', bottom: 50, left: 50 }}>
-            {/* <NavigationIcon className={classes.extendedIcon} /> */}
         Add a Plant
           </Fab>
         </div>
@@ -258,14 +255,6 @@ class MyProfile extends React.Component {
         >
           {this.state.username.toUpperCase()}
         </Typography>
-
-        {/* <Typography
-          variant="subtitle1"
-          gutterBottom
-        >
-          {this.state.zipcode}
-        </Typography> */}
-
         <div className={classes.root}>
 
           <Typography
@@ -295,23 +284,6 @@ class MyProfile extends React.Component {
                 <IconButton aria-label="delete this plant" onClick={() => {this.deleteButton(plant.id)}}>
                   <DeleteOutlinedIcon className={classes.icon} />
                 </IconButton>
-                {/* <IconButton aria-label="toggle on and off" onClick={this.toggleButton}> */}
-                  {/* <Toggle style={iconStyles} color={red500} hoverColor={greenA200} /> */}
-                  {/* <FavoriteIcon /> */}
-                {/* </IconButton> */}
-                {/* <FormControlLabel
-                  control={(
-                    <Checkbox
-                      icon={<FavoriteBorder />}
-                      checkedIcon={<Favorite />}
-                      value="checkedH"
-                      onClick={() => {
-                        this.handleLike(plant.id);
-                      }}
-                    />
-                  )}
-                  label="Like"
-                /> */}
                 <FormControlLabel
                   control={(
                     <Checkbox
@@ -330,53 +302,6 @@ class MyProfile extends React.Component {
           })
           }
         </div>
-        {/* <div>
-          <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-            Add a Plant
-          </Button>
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Add a new plant for fellow Pluckers to Pluck!
-              </DialogContentText>
-              <TextField
-                id="outlined-with-placeholder"
-                label="Pluck Me!"
-                className={classes.textField}
-                margin="normal"
-                variant="outlined"
-              />
-              <TextField
-                id="outlined-with-placeholder"
-                label="Address"
-                className={classes.textField}
-                margin="normal"
-                variant="outlined"
-              />
-              <TextField
-                id="outlined-with-placeholder"
-                label="Zip Code"
-                placeholder="Placeholder"
-                className={classes.textField}
-                margin="normal"
-                variant="outlined"
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={this.handleClose} color="primary">
-                Subscribe
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div> */}
       </div>
     );
   }
