@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
+import { render } from 'react-dom';
 import MapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
 import config from '../../../config';
-import PlantPin from './plant-pin.jsx';
-import PlantInfo from './plant-info.jsx';
+// import PlantPin from './plant-pin.jsx';
+// import PlantInfo from './plant-info.jsx';
+
+import CityPin from './city-pin.jsx';
+import CityInfo from './city-info.jsx';
+
+import CITIES from './cities.js';
 
 const TOKEN = config.pubKey; // Set your mapbox token here
 const navStyle = {
@@ -37,8 +43,37 @@ export default class MapView extends Component {
       } });
   }
 
+  renderCityMarker(city, index) {
+    return (
+      <Marker
+        key={`marker-${index}`}
+        longitude={city.longitude}
+        latitude={city.latitude}
+      >
+        <CityPin size={20} onClick={() => this.setState({ popupInfo: city })} />
+      </Marker>
+    );
+  }
+
+  renderPopup() {
+    const { popupInfo } = this.state;
+
+    return popupInfo && (
+      <Popup tipSize={5}
+        anchor="top"
+        longitude={popupInfo.longitude}
+        latitude={popupInfo.latitude}
+        closeOnClick={false}
+        onClose={() => this.setState({ popupInfo: null })} 
+      >
+        <CityInfo info={popupInfo} />
+      </Popup>
+    );
+  }
+
 
   render() {
+    // debugger;
     const { popupInfo, viewport } = this.state;
     return (
       <MapGL
@@ -49,7 +84,10 @@ export default class MapView extends Component {
       >
 
         {/* {CITIES.map(this.renderPlantMarker)} */}
-        {/* {this.renderPopup()} */}
+        {CITIES.map(this.renderCityMarker)}
+
+        {this.renderPopup()}
+
         <div className="nav" style={navStyle}>
           <NavigationControl onViewportChange={this.updateViewport} />
         </div>
