@@ -31,7 +31,6 @@ class MapViewContainer extends React.Component {
   getLocation() {
     if (navigator.geolocation) {
       console.log('Geolocation is supported!');
-      console.log(this.props.allPlants, 'HEREEEEE');
       const geoOptions = {
         timeout: 10 * 1000,
       };
