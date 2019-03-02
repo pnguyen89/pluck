@@ -11,6 +11,10 @@ export default class CityInfo extends PureComponent {
       <div>
         <div>
           {displayName} 
+          <br />
+          {info.address}, {info.zipcode} <br />
+          description: {info.description} <br />
+          likes: {info.likes}
           {/* | <a target="_new"
           href={`http://en.wikipedia.org/w/index.php?title=Special:Search&search=${displayName}`}>
             Wikipedia

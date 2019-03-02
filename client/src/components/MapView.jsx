@@ -79,7 +79,9 @@ export default class MapView extends Component {
   render() {
     // debugger;
     const { popupInfo, viewport } = this.state;
+    const { allPlants } = this.props;
     return (
+      // <div>{allPlants[0].plant}</div>
       <MapGL
         {...viewport}
         mapStyle="mapbox://styles/mapbox/basic-v9"
@@ -92,7 +94,8 @@ export default class MapView extends Component {
           onViewportChange={this._updateViewport}
         /> */}
         {/* {CITIES.map(this.renderPlantMarker)} */}
-        {CITIES.map(this.renderCityMarker)}
+        {/* {CITIES.map(this.renderCityMarker)} */}
+        {allPlants.map(this.renderCityMarker)}
 
         {this.renderPopup()}
 
