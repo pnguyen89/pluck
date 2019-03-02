@@ -236,7 +236,7 @@ class MyProfile extends React.Component {
     });
   }
 
-// render username, zip, and user plants dynamically
+  // render username, zip, and user plants dynamically
   render() {
     const { classes, handleChange } = this.props;
     return (
@@ -247,7 +247,7 @@ class MyProfile extends React.Component {
             <AddIcon onclick={this.submitPlant} />add plant
           </Fab> */}
           <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} style={{ position: 'absolute', bottom: 50, left: 50 }}>
-            <NavigationIcon className={classes.extendedIcon} />
+            {/* <NavigationIcon className={classes.extendedIcon} /> */}
         Add a Plant
           </Fab>
         </div>

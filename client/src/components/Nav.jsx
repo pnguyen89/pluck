@@ -146,6 +146,7 @@ class ButtonAppBar extends React.Component {
                         p l u c k
               </Typography>
 
+              <NavLink to="/plantLocation" style={{ color: 'white', textDecoration: 'none' }}> <Button color="inherit">Map  </Button> </NavLink>
               <NavLink to="/" style={{ color: 'white', textDecoration: 'none' }}> <Button color="inherit">Location  </Button> </NavLink>
               <NavLink to="/MyProfile" style={{ color: 'white', textDecoration: 'none' }}> <Button color="inherit"> My Plants  </Button> </NavLink>
               <NavLink to="/userLogin" style={{ color: 'white', textDecoration: 'none' }}><Button color="inherit" onClick={logUser}> Login / Logout</Button> </NavLink>
