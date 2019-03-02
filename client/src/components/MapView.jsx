@@ -4,6 +4,7 @@ import MapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
 import config from '../../../config';
 // import PlantPin from './plant-pin.jsx';
 // import PlantInfo from './plant-info.jsx';
+// import { GeolocateControl } from 'react-map-gl';
 
 import CityPin from './city-pin.jsx';
 import CityInfo from './city-info.jsx';
@@ -85,7 +86,11 @@ export default class MapView extends Component {
         mapboxApiAccessToken={TOKEN}
         onViewportChange={this.updateViewport}
       >
-
+        {/* <GeolocateControl
+          positionOptions={{ enableHighAccuracy: true }}
+          trackUserLocation={true}
+          onViewportChange={this._updateViewport}
+        /> */}
         {/* {CITIES.map(this.renderPlantMarker)} */}
         {CITIES.map(this.renderCityMarker)}
 
