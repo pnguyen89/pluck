@@ -61,6 +61,12 @@ const styles = {
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
+  fab: {
+    margin: 0,
+    bottom: 50,
+    left: 50,
+    position: 'fixed',
+  },
   // starting here down, this is for the toggle
   // colorBar: {},
   // colorChecked: {},
@@ -246,9 +252,10 @@ class MyProfile extends React.Component {
           <NavigationIcon className={classes.extendedIcon}
             <AddIcon onclick={this.submitPlant} />add plant
           </Fab> */}
-          <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} style={{ position: 'absolute', bottom: 50, left: 50 }}>
+          <Fab component={Link} to="/submitPlant" color="primary" size="medium" variant="extended" aria-label="Add a Plant" className={classes.fab} styles={styles.fab}>
             {/* <NavigationIcon className={classes.extendedIcon} /> */}
         Add a Plant
+            {/* <ContentAdd /> */}
           </Fab>
         </div>
         <Typography
