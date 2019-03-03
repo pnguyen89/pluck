@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Redirect } from 'react-router-dom';
 import config from '../../../config';
+import Downshift from 'downshift';
+const Typeahead = require('react-typeahead').Typeahead;
 
 const styles = theme => ({
   container: {
@@ -29,7 +32,7 @@ const styles = theme => ({
 });
 
 // for drop down
-const currencies = [
+let currencies = [
   {
     value: 'Strawberries',
     label: 'Strawberries',
@@ -72,6 +75,21 @@ const currencies = [
   },
 ];
 
+let currencyNames = [];
+
+axios.get('/plantnames').then((result) => {
+  const plantArray = [];
+  _.forEach(result.data, (plantname) => {
+    const obj = {};
+    obj.value = plantname;
+    plantArray.push(obj);
+  });
+  currencyNames = result.data;
+  currencies = plantArray;
+}).catch((err) => {
+  console.log(err);
+});
+
 class PlantProfile extends React.Component {
   constructor(props) {
     super(props);
@@ -82,6 +100,9 @@ class PlantProfile extends React.Component {
       loggedIn: false,
       currency: 'Select',
       username: props.username,
+      plantAddress: '',
+      plantZipcode: '',
+      plantName: '',
     };
     this.getPlantType = this.getPlantType.bind(this);
     this.fileSelectHandler = this.fileSelectHandler.bind(this);
@@ -96,10 +117,33 @@ class PlantProfile extends React.Component {
   // function that sets state via onchange
   // allows us to grab the plant type and description
   onChange(event) {
-    // find out if descrip field is being used
+    // find out if descrip field is being used ///
+    console.log(event.target.id);
     if (event.target.id === 'description') {
       this.setState({
         description: event.target.value,
+      });
+    } else if (event.target.id === 'plantAddress') {
+      this.setState({
+        plantAddress: event.target.value,
+      });
+    } else if (event.target.id === 'plantZipcode') {
+      this.setState({
+        plantZipcode: event.target.value,
+      });
+    } else if (event.target.id === 'plantName' || event.target.id === 'downshift-0-input' || _.includes(event.target.id, 'downshift')) {
+      if (_.includes(event.target.id, 'downshift') && _.includes(event.target.id, 'item')) {
+        return this.setState({
+          plantName: event.target.innerText,
+        });
+      }
+      this.setState({
+        plantName: event.target.value,
+      });
+    } else if (event.target.id === 'downshift-1-input') {
+      console.log(event.target);
+      return this.setState({
+        plantName: event.target.innerText,
       });
     }
   }
@@ -169,7 +213,7 @@ class PlantProfile extends React.Component {
   //     .catch((err) => { console.log(err); });
   // }
 
-  ////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
 
 
   // function when submit button is pressed
@@ -186,16 +230,25 @@ class PlantProfile extends React.Component {
     // send post req to server to save new plant info in plants table
     // add plant to users profile page
     // need to send through userId, type, description, address, zipcode, image
-    axios.post('/plant/profile', { currency, description, image, username })
-      .then((res) => { console.log(res); })
+    // axios.post('/plant/profile', { currency, description, image, username })
+    axios({
+      method: 'post',
+      url: '/plant/user',
+      data: {
+        username: this.state.username,
+        currency: this.state.plantName,
+        address: this.state.plantAddress,
+        zipcode: this.state.plantZipcode,
+        description: this.state.description,
+      },
+    })
+      .then((res) => { 
+        this.props.getAllPlants();
+        console.log(res);
+      })
       .catch((err) => { console.log(err); });
 
-    // set state is async so needs a second to load
-    setTimeout(() => {
-      this.setState({
-        redirect: true,
-      });
-    }, 1000);
+    // set state is async so needs a second to load //
   }
 
   render() {
@@ -206,35 +259,56 @@ class PlantProfile extends React.Component {
       return <Redirect to={{ pathname: '/myProfile' }} />;
     }
 
-
+    console.log(this.state.plantName);
     return (
       <div className="zip-body">
-        <form className={classes.container} noValidate autoComplete="off">
-          <TextField
-            id="outlined-select-currency"
-            select
-            label="Select"
-            className={classes.textField}
-            value={this.state.currency}
-            onChange={this.handleChange('currency')} 
-            SelectProps={{
-              MenuProps: {
-                className: classes.menu,
-              },
-            }}
-            helperText="Please select your Plant Type"
-            margin="normal"
-            variant="outlined"
+        <form className={classes.container} noValidate autoComplete="on">
+          {/* <Typeahead className={classes.textField} options={currencyNames} maxVisible={7} /> */}
+          <Downshift
+            itemToString={item => (item ? item.value : '')}
           >
-            {currencies.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+            {({
+              getInputProps,
+              getItemProps,
+              getLabelProps,
+              getMenuProps,
+              isOpen,
+              inputValue,
+              highlightedIndex,
+              selectedItem,
+            }) => (
+              <div>
+                <TextField id="plantName" label="Plant Name" className={classes.textField} margin="normal" variant="standard" onInput={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} {...getInputProps()} />
+                <div className="dropdown-holder" {...getMenuProps()} onClick={this.onChange}>
+                  {isOpen
+                    ? currencies
+                      .filter(item => !inputValue || item.value.toLowerCase().includes(inputValue.toLowerCase()))
+                      .map((item, index) => (
+                        <div
+                          className="dropdown-item"
+                          {...getItemProps({
+                            key: item.value,
+                            index,
+                            item,
+                            style: {
+                              backgroundColor:
+                                highlightedIndex === index ? 'lightgray' : 'white',
+                              fontWeight: selectedItem === item ? 'bold' : 'normal',
+                            },
+                          })}
+                        >
+                          {item.value}
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
+            )}
+          </Downshift>
         </form>
         <form className={classes.container} noValidate autoComplete="off">
-
+          <TextField id="plantAddress" label="Address" className={classes.textField} margin="normal" variant="standard" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
+          <TextField id="plantZipcode" label="Zipcode" className={classes.textField} margin="normal" variant="standard" onChange={this.onChange} SelectProps={{ MenuProps: { className: classes.menu } }} />
           <TextField
             id="description"
             label="description"
@@ -242,7 +316,7 @@ class PlantProfile extends React.Component {
             rows="4"
             className={classes.textField}
             margin="normal"
-            variant="outlined"
+            variant="standard"
             onChange={this.onChange}
             SelectProps={{
               MenuProps: {

@@ -1,69 +1,108 @@
-import React from 'react';
-import axios from 'axios';
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
-import config from '../../../config'
-import mapboxgl from 'mapbox-gl';
-import * as MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import MapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
+import config from '../../../config';
+// import PlantPin from './plant-pin.jsx';
+// import PlantInfo from './plant-info.jsx';
+// import { GeolocateControl } from 'react-map-gl';
 
+import CityPin from './city-pin.jsx';
+import CityInfo from './city-info.jsx';
 
-var map;
-var directions;
-mapboxgl.accessToken = config.pubKey
+import CITIES from './cities.js';
 
-const dotenv = require('dotenv').config();  
-
-const Map = ReactMapboxGl({
-    accessToken: config.pubKey
-});
-
-class MapView extends React.Component {
+const TOKEN = config.pubKey; // Set your mapbox token here
+const navStyle = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  padding: '10px',
+};
+export default class MapView extends Component {
   constructor(props) {
     super(props);
-    // create state that is set to the plant's adress
     this.state = {
-        address: []
-    }
-    this.getAddress = this.getAddress.bind(this);
-}
+      viewport: props.viewport,
+      popupInfo: null,
+    };
+    this.updateViewport = this.updateViewport.bind(this);
+    this.renderCityMarker = this.renderCityMarker.bind(this);
+    this.renderPopup = this.renderPopup.bind(this);
 
-  componentDidMount() {
-    // add destination property to directions? to render map with plant's address as destination
-    map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-98.5795, 39.8283],
-      zoom: 3,
-    });
-    directions = new MapboxDirections({
-      accessToken: config.key,
-      unit: 'metric',
-      profile: 'mapbox/walking',
-    });
-    map.addControl(directions, 'top-left');
-    directions.setOrigin([-90.069800, 29.972890]);
-    directions.setDestination('1560 North Rocheblave Street');
-    this.getAddress();
-}
+  }
 
-  getAddress() {
-    axios.get('/health')
-      .then((res) => {
-        console.log(res);
-        const plant = res.data;
-        this.setState({ address: plant.address });
-      });
+  componentWillReceiveProps({ viewport: newViewPort }) {
+    this.setState({
+      viewport: newViewPort,
+    });
+  }
+
+  updateViewport(viewport) {
+    const { viewport: { latitude, longitude }} = this.props;
+    this.setState({ 
+      viewport: {
+        latitude,
+        longitude,
+        ...viewport,
+      } });
+  }
+
+  renderCityMarker(city, index) {
+    return (
+      <Marker
+        key={`marker-${index}`}
+        longitude={city.longitude}
+        latitude={city.latitude}
+      >
+        <CityPin size={20} onClick={() => this.setState({ popupInfo: city })} />
+      </Marker>
+    );
+  }
+
+  renderPopup() {
+    const { popupInfo } = this.state;
+
+    return popupInfo && (
+      <Popup tipSize={5}
+        anchor="top"
+        longitude={popupInfo.longitude}
+        latitude={popupInfo.latitude}
+        closeOnClick={false}
+        onClose={() => this.setState({ popupInfo: null })} 
+      >
+        <CityInfo info={popupInfo} />
+      </Popup>
+    );
   }
 
 
   render() {
+    // debugger;
+    const { popupInfo, viewport } = this.state;
+    const { allPlants } = this.props;
     return (
-      <div>
-        <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js'></script>
-        <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.css' type='text/css' />
-        <div id="map" style={{ width: 600, height: 500, marginLeft: 'auto', marginRight: 'auto'}}/>
-      </div>
+      // {allPlants}
+      <MapGL
+        {...viewport}
+        mapStyle="mapbox://styles/mapbox/basic-v9"
+        mapboxApiAccessToken={TOKEN}
+        onViewportChange={this.updateViewport}
+      >
+        {/* <GeolocateControl
+          positionOptions={{ enableHighAccuracy: true }}
+          trackUserLocation={true}
+          onViewportChange={this._updateViewport}
+        /> */}
+        {/* {CITIES.map(this.renderPlantMarker)} */}
+        {/* {CITIES.map(this.renderCityMarker)} */}
+        {allPlants.map(this.renderCityMarker)}
+
+        {this.renderPopup()}
+
+        <div className="nav" style={navStyle}>
+          <NavigationControl onViewportChange={this.updateViewport} />
+        </div>
+      </MapGL>
     );
   }
 }
-
-export default MapView;

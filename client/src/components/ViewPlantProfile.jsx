@@ -7,16 +7,50 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { NavLink } from 'react-router-dom'; 
+import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import _ from 'lodash';
+
+// import Comments from './Comments.jsx';
+import {
+  Dialog, DialogActions, DialogContent, DialogContentText,
+  DialogTitle, FormGroup, FormControlLabel, Snackbar,
+  SnackbarContent, TextField
+} from '@material-ui/core';
+// import { blue500, red500, greenA200 } from 'material-ui/styles/colors';
+// import SvgIcon from 'material-ui/SvgIcon';
+
+// const iconStyles = {
+//   marginRight: 24,
+// };
+
+// const Toggle = props => (
+//   <SvgIcon {...props}>
+//     <path d="M17 7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
+//   </SvgIcon>
+// );
 
 const x = document.getElementById('demo');
 
 const styles = theme => ({
+  root: {
+    color: theme.palette.text.primary,
+  },
+  icon: {
+    margin: theme.spacing.unit,
+    fontSize: 32,
+    padding: '0%',
+  },
   card: {
     maxWidth: 400,
   },
@@ -43,13 +77,22 @@ class ViewPlantProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      plantId: '',
       userId: props.userId,
+      liked: false,
+      comments: [],
     };
     this.favoriteButton = this.favoriteButton.bind(this);
     this.getDirections = this.getDirections.bind(this);
     this.getLocation = this.getLocation.bind(this);
+    this.commentToggle = this.commentToggle.bind(this);
   }
+
+  componentDidMount() {
+    this.setState({
+      liked: this.props.liked,
+    });
+  }
+
 
   // doesnt work
   getDirections() {
@@ -58,6 +101,7 @@ class ViewPlantProfile extends React.Component {
     //   need enpoint from api
     //   should send address of plant
   }
+
 
   // gets location of current user https://www.w3schools.com/html/html5_geolocation.asp
   // need to find a way to get cordinates/location in Mapview.
@@ -72,13 +116,25 @@ class ViewPlantProfile extends React.Component {
 
   // THIS IS CLOSE TO WORKING BUT NOT QUITE FUNCTIONAL
   favoriteButton() {
+    console.log(this.state);
+    console.log('favorite button clicked');
+    // const { userId } = this.state;
+    // const { plantId } = this.props;
     const { userId } = this.state;
-    const plantId = this.props.plant.plantId;
-
+    const plantId = this.props.plant.id;
+    console.log(this);
     // post request to server
     //  add plant to users favs
     //  send user id + plant id
-    axios.post('/user/favorite', { userId, plantId })
+    // axios.put('/user/favorite', { userId, plantId }) //
+    axios({
+      method: 'put',
+      url: '/likes',
+      data: {
+        iduser: this.state.userId,
+        idplant: plantId || '1',
+      },
+    })
       .then((res) => { console.log(res); })
       .catch((err) => { console.log(err); });
   }
@@ -91,33 +147,77 @@ class ViewPlantProfile extends React.Component {
   // `Latitude: ${position.coords.latitude}
   // Longitude: ${position.coords.longitude}`;
 
-  render() {
-    const { classes } = this.props;
+  commentToggle() {
+    console.log('commentToggle clicked');
+    console.log(plant.id);
+    // axios({
+    //   method: 'get',
+    //   url: '/plant/comments',
+    //   data: {
+    //     idplant: plantId || '1',
+    //   },
+    // })
+    //   .then((res) => {
+    //     console.log(res, 'returning comments');
+    //     this.setState({
+    //       comments: res.data, // check if retriving correct part of data
+    //     });
+    //     return <Comments comments={this.state.comments} />;
+    //   })
+    //   .catch((err) => { console.log(err, 'cannot get comments'); });
+  }
 
+  render() {
+    const { classes, plant } = this.props;
+    console.log(this);
     return (
       <Card className={classes.card}>
         <CardHeader
-          title={this.props.plant.title}
+          title={plant.plant}
         />
         <CardMedia
           className={classes.media}
-          image={this.props.plant.image_url}
-          title={this.props.plant.title}
+          image={plant.imagelink}
+          title={plant.plant}
         />
         <CardContent>
           <Typography component="p">
-            {this.props.plant.description}
+            {plant.address}, {plant.zipcode} <br />
+            {plant.description}
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
+          {/* <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
             <FavoriteIcon />
-          </IconButton>
+          </IconButton> */}
+          <FormControlLabel
+            control={(
+              <Checkbox
+                icon={<FavoriteBorder />}
+                checkedIcon={<Favorite />}
+                checked={this.state.liked}
+                value="checkedH"
+                onClick={this.favoriteButton}
+              />
+            )}
+            label="Like"
+          />
           <NavLink to="/plantLocation" style={{ textDecoration: 'none' }}>
             <Button variant="contained" onClick={this.getLocation} className={classes.button}>
-                Get Directions
+              Get Directions
             </Button>
           </NavLink>
+          {/* <div onClick={() => {this.commentToggle()}} >
+            <i class="far fa-comment-alt"></i>
+            {/* <span style="font-size: 48px; color: Dodgerblue;"> */}
+          {/* <span fontSize="48px" color="Dodgerblue">
+              <i class="far fa-comment-alt"></i>
+            </span>
+            <input type="image" src={logo} width="7%" height="auto" onClick={() => this.changeView('search')} />
+          </div> */}
+          {/* <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
+            
+          </IconButton> */}
         </CardActions>
       </Card>
     );

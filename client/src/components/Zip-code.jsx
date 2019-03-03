@@ -12,6 +12,8 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
+import logo from '../images/PLUCK-logo-02.png';
+
 const styles = theme => ({
   container: {
     display: 'block',
@@ -49,7 +51,7 @@ class ComposedTextField extends React.Component {
   enterZipCode() {
     const { zipcode } = this.state;
     this.props.onSubmit({ zipcode });
-
+    console.log(zipcode);
     // brought to list view
     // set state of 'redirect' to true --> setstate is async aka needs settimeout (theres def a better way to do this)
     setTimeout(() => {
@@ -70,7 +72,7 @@ class ComposedTextField extends React.Component {
 
     return (
       <div>
-        <img className="logo-body" src={require('../PLUCK-logo-02.png')} />
+        <img className="logo-body" src={require('../images/PLUCK-logo-02.png')} />
         <div className="zip-body">
           <FormControl className={classes.formControl} variant="outlined">
             <InputLabel

@@ -1,9 +1,10 @@
+.vscode/
 node_modules/
 bower_components/
 *.log
 build/
 client/dist/
-bundle.js
+client/dist/bundle.js
 .env
 package-lock.json
 bundle.js

@@ -9,12 +9,12 @@ USE pluck;
 -- USERS table to hold id, address, zip, username and hashed password
 CREATE TABLE users (
   id INTEGER AUTO_INCREMENT NOT NULL,
-  address TEXT(4294967295) NOT NULL,
-  zipcode INT NOT NULL,
   username VARCHAR(50) NOT NULL,
   password TEXT(4294967295) NOT NULL,
   salt VARCHAR(100) NOT NULL,
-  loggedIn VARCHAR(50) NOT NULL DEFAULT 'true',
+  address TEXT(4294967295) NOT NULL,
+  zipcode INT NOT NULL,
+  loggedIn BOOLEAN DEFAULT 1,
   PRIMARY KEY (id)
 );
 
@@ -25,8 +25,11 @@ CREATE TABLE plants (
   plant TEXT NOT NULL,
   address TEXT(4294967295) NOT NULL,
   zipcode INT NOT NULL,
-  description TEXT(500),
-  toggled BOOLEAN,
+  description TEXT (4294967295) NOT NULL,
+  toggled BOOLEAN DEFAULT 0,
+  likes INT NOT NULL DEFAULT 0,
+  longitude FLOAT(23) NOT NULL,
+  latitude FLOAT(23) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -45,5 +48,23 @@ CREATE TABLE usersPlants (
   id INTEGER AUTO_INCREMENT NOT NULL,
   iduser INTEGER NOT NULL,
   idplant INTEGER NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE usersLiked (
+  id INTEGER AUTO_INCREMENT NOT NULL,
+  iduser INTEGER NOT NULL,
+  idplant INTEGER NOT NULL,
+  PRIMARY KEY (id)
+);
+
+
+CREATE TABLE comments (
+  id INTEGER AUTO_INCREMENT NOT NULL,
+  iduser INTEGER(255) NOT NULL,
+  idplant INTEGER(255) NOT NULL,
+  comment TEXT(4294967295) NOT NULL,
+  hourcreated INTEGER(255) NOT NULL,
+  minutecreated INTEGER(255) NOT NULL,
   PRIMARY KEY (id)
 );
