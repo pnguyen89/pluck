@@ -242,18 +242,13 @@ class PlantProfile extends React.Component {
         description: this.state.description,
       },
     })
-      .then((res) => {
-        this.setState({
-          redirect: true,
-        });
+      .then((res) => { 
+        this.props.getAllPlants();
+        console.log(res);
       })
-      .catch((err) => {
-        this.setState({
-          redirect: true,
-        });
-      });
+      .catch((err) => { console.log(err); });
 
-    // set state is async so needs a second to load
+    // set state is async so needs a second to load //
   }
 
   render() {

@@ -187,9 +187,9 @@ class ViewPlantProfile extends React.Component {
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
+          {/* <IconButton aria-label="Add to favorites" onClick={this.favoriteButton}>
             <FavoriteIcon />
-          </IconButton>
+          </IconButton> */}
           <FormControlLabel
             control={(
               <Checkbox
