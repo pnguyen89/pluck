@@ -83,15 +83,16 @@ class MapViewContainer extends React.Component {
   }
 
   render() {
-    const style = { width: 600, height: 500, marginLeft: 'auto', marginRight: 'auto' };
+    // const style = { width: 600, height: 500, marginLeft: 'auto', marginRight: 'auto' };
+    const style = { marginTop: '50px', marginLeft: 'auto', marginRight: 'auto' };
     const { viewport } = this.state;
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
+      <div className={classes.root} style={style}>
         <Grid container spacing={24}>
           <Grid item xs>
             {/* <Paper className={classes.paper}>xs</Paper> */}
-            <PlantBar />
+            <PlantBar allPlants={this.props.allPlants} />
           </Grid>
           <Grid item xs>
             {/* <Paper className={classes.paper}>xs</Paper> */}

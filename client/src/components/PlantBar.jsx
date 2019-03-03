@@ -45,7 +45,7 @@ const styles = theme => ({
  * ];
  */
 function PlantBar(props) {
-  const { classes } = props;
+  const { classes, allPlants } = props;
 
   return (
     <div className={classes.root}>
@@ -53,8 +53,8 @@ function PlantBar(props) {
         <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
           <ListSubheader component="div">Plucking Good</ListSubheader>
         </GridListTile>
-        {cities.map(tile => (
-          <GridListTile key={tile.plant}>
+        {allPlants.map(tile => (
+          <GridListTile key={tile.id}>
             <img src={tile.imagelink} alt={tile.plant} />
             <GridListTileBar
               title={tile.plant}
