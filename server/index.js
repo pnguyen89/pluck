@@ -298,6 +298,16 @@ app.post('/comments', (req, res) => {
   });
 });
 
+app.get('/user/favorites', (req, res) => {
+  dbHelpers.selectAllUsersLikes(req.query.iduser, (err, favorites) => {
+    if (err) {
+      res.status(500).send('We tried');
+    } else {
+      res.status(200).send(favorites);
+    }
+  })
+});
+
 app.get('/plant/comments', (req, res) => {
   dbHelpers.selectAllPlantsComments(req.query.idplant, (err, comments) => {
     if (err) {
