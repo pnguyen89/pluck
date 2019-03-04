@@ -25,7 +25,7 @@ class MapViewContainer extends React.Component {
     super(props);
     this.state = {
       viewport: {
-        zoom: 13,
+        zoom: 11,
         bearing: 0,
         pitch: 0,
         width: 500,

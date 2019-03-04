@@ -36,47 +36,57 @@ const styles = theme => ({
 });
 
 
-function UsersLikes(props) {
-  const { classes, likedPlants } = props;
-  if (likedPlants.length === undefined) {
-    return (
-      <div>No Likes yet</div>
-    );
+class UsersLikes extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      likedPlants: props.likedPlants,
+    };
   }
 
-  return (
-    <div>
+  render() {
+    const { classes } = this.props;
+    const { likedPlants } = this.state;
+    if (likedPlants.length === undefined) {
+      return (
+        <div>No Likes yet</div>
+      );
+    }
 
-      <Typography
-        variant="h6"
-        gutterBottom
-      // align="center"
-      >
-        Here are you favorite Plucks
-      </Typography>
-      <div className={classes.root} style={{ width: '500px' }}>
-        <GridList className={classes.gridList} cols={2.5}>
-          {likedPlants.map(tile => (
-            <GridListTile key={tile.id}>
-              <img src={tile.imagelink} alt={tile.plant} />
-              <GridListTileBar
-                title={tile.plant}
-                classes={{
-                  root: classes.titleBar,
-                  title: classes.title,
-                }}
-                actionIcon={
-                  <IconButton>
-                    <StarBorderIcon className={classes.title} />
-                  </IconButton>
-                }
-              />
-            </GridListTile>
-          ))}
-        </GridList>
+    return (
+      <div>
+
+        <Typography
+          variant="h6"
+          gutterBottom
+        // align="center"
+        >
+          Here are you favorite Plucks
+        </Typography>
+        <div className={classes.root} style={{ width: '500px' }}>
+          <GridList className={classes.gridList} cols={2.5}>
+            {likedPlants.map(tile => (
+              <GridListTile key={tile.id}>
+                <img src={tile.imagelink} alt={tile.plant} />
+                <GridListTileBar
+                  title={tile.plant}
+                  classes={{
+                    root: classes.titleBar,
+                    title: classes.title,
+                  }}
+                  actionIcon={(
+                    <IconButton>
+                      <StarBorderIcon className={classes.title} />
+                    </IconButton>
+  )}
+                />
+              </GridListTile>
+            ))}
+          </GridList>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 UsersLikes.propTypes = {

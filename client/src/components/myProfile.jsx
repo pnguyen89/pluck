@@ -80,6 +80,7 @@ class MyProfile extends React.Component {
       userId: this.props.id,
       checkedB: true, // for the toggle
       liked: true, // like button
+      likedPlants: props.likedPlants,
     };
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -177,7 +178,8 @@ class MyProfile extends React.Component {
 
   // render username, zip, and user plants dynamically
   render() {
-    const { classes, handleChange, likedPlants } = this.props;
+    const { classes, handleChange } = this.props;
+    const { likedPlants } = this.state;
     return (
       <center>
 
@@ -192,7 +194,7 @@ class MyProfile extends React.Component {
           Add a Plant
               {/* <ContentAdd /> */}
             </Fab>
-          </div>       
+          </div>
           <Typography
             variant="h5"
             gutterBottom

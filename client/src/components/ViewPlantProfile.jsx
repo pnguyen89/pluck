@@ -87,11 +87,11 @@ class ViewPlantProfile extends React.Component {
     this.commentToggle = this.commentToggle.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({
-      liked: this.props.liked,
-    });
-  }
+  // componentDidMount() {
+  //   this.setState({
+  //     liked: this.props.liked,
+  //   });
+  // }
 
 
   // doesnt work
@@ -135,7 +135,10 @@ class ViewPlantProfile extends React.Component {
         idplant: plantId || '1',
       },
     })
-      .then((res) => { console.log(res); })
+      .then((res) => {
+        console.log(res);
+        this.props.getLikes();
+      })
       .catch((err) => { console.log(err); });
   }
 
@@ -195,25 +198,13 @@ class ViewPlantProfile extends React.Component {
               <Checkbox
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
-                checked={this.state.liked}
+                // checked={this.state.liked}
                 value="checkedH"
-                onClick={() => {
-                  this.favoriteButton();
-                }}
+                onClick={this.favoriteButton}
               />
             )}
             label="Like"
           />
-          {/* <FormControlLabel
-            control={(
-              <Checkbox
-                icon={<FavoriteBorder />} 
-                checkedIcon={<Favorite />} 
-                value="checkedH" 
-                onClick={()=> {console.log('man')}}/>
-            )}
-            label="Custom icon"
-          /> */}
           <NavLink to="/plantLocation" style={{ textDecoration: 'none' }}>
             <Button variant="contained" onClick={this.getLocation} className={classes.button}>
               Get Directions

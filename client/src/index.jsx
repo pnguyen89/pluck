@@ -70,7 +70,7 @@ class App extends React.Component {
         userslikes: likes.data,
       });
     }).catch((err) => {
-      console.log(err, 'in getting likes');
+      console.log(err, ' error in getting likes');
     });
   }
 
@@ -186,8 +186,8 @@ class App extends React.Component {
               <Route path="/userProfile" render={() => <UserProfile plants={this.state.plants} onSubmit={this.submitUserInfo} />} />
               <Route path="/plantList" render={() => <PlantList plants={this.state.plants} userId={this.state.userId} />} />              <Route path="/plantList" component={MapViewContainer} />
               <Route path="/userLogin" render={() => <UserLogin plants={this.state.plants} zipcode={this.state.zipcode} onSubmit={this.userLogin} />} />
-              <Route path="viewPlantProfile" render={() => <ViewPlantProfile userId={this.state.userId} />} />
-              <Route path="/submitPlant" render={() => <CreatePlantProfile userId={this.state.userId} username={this.state.username} getAllPlants={this.getAllPlants} />} />
+              <Route path="viewPlantProfile" render={() => <ViewPlantProfile userId={this.state.userId} getLikes={this.getUsersLikes} />} />
+              <Route path="/submitPlant" render={() => <CreatePlantProfile userId={this.state.userId} username={this.state.username} getAllPlants={this.getAllPlants} getLikes={this.getUsersLikes} />} />
               <Route path="/myProfile" render={() => <MyProfile zipcode={this.state.zipcode} plants={this.state.userPlants} username={this.state.username} id={this.state.userId} handleChange={this.handleChange} likedPlants={this.state.userslikes} />} />
               <Route path="/plantLocation" render={() => <MapViewContainer allPlants={this.state.allPlants} />} />
 
