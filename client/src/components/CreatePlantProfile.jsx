@@ -245,6 +245,7 @@ class PlantProfile extends React.Component {
       .then((res) => { 
         this.props.getAllPlants();
         console.log(res);
+        // return <Redirect to={{ pathname: '/myProfile' }} />;
       })
       .catch((err) => { console.log(err); });
 

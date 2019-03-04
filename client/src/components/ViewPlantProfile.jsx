@@ -197,11 +197,23 @@ class ViewPlantProfile extends React.Component {
                 checkedIcon={<Favorite />}
                 checked={this.state.liked}
                 value="checkedH"
-                onClick={this.favoriteButton}
+                onClick={() => {
+                  this.favoriteButton();
+                }}
               />
             )}
             label="Like"
           />
+          {/* <FormControlLabel
+            control={(
+              <Checkbox
+                icon={<FavoriteBorder />} 
+                checkedIcon={<Favorite />} 
+                value="checkedH" 
+                onClick={()=> {console.log('man')}}/>
+            )}
+            label="Custom icon"
+          /> */}
           <NavLink to="/plantLocation" style={{ textDecoration: 'none' }}>
             <Button variant="contained" onClick={this.getLocation} className={classes.button}>
               Get Directions
